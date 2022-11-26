@@ -1,10 +1,11 @@
 import pygame as p
-
 from VietnameseMathChess import ChessEngine
 
-WIDTH = HEIGHT = 576
-DIMENSION = 9
-SQ_SIZE = HEIGHT // 9
+WIDTH = 576
+HEIGHT = 704
+C_DIMENSION = 9
+R_DIMENSION = 11
+SQ_SIZE = HEIGHT // R_DIMENSION
 MAX_FPS = 15
 IMAGES = {}
 
@@ -17,16 +18,16 @@ def loadImages():
 
 
 def drawBoard(screen):
-    colors = [p.Color("white"), p.Color("gray")]
-    for r in range(DIMENSION):
-        for c in range(DIMENSION):
+    colors = [p.Color("white"), p.Color("bisque3")]
+    for r in range(R_DIMENSION):
+        for c in range(C_DIMENSION):
             color = colors[((r + c) % 2)]
             p.draw.rect(screen, color, p.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 
 def drawPieces(screen, board):
-    for r in range(DIMENSION):
-        for c in range(DIMENSION):
+    for r in range(R_DIMENSION):
+        for c in range(C_DIMENSION):
             piece = board[r][c]
             if piece != "--":
                 screen.blit(IMAGES[piece], p.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
