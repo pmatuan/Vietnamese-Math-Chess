@@ -14,7 +14,7 @@ def loadImages():
     pieces = ["ba", "bb", "bc", "bd", "be", "bf", "bg", "bh", "bi", "bj",
               "ra", "rb", "rc", "rd", "re", "rf", "rg", "rh", "ri", "rj"]
     for piece in pieces:
-        IMAGES[piece] = p.transform.scale(p.image.load("image/" + piece + ".png"), (SQ_SIZE, SQ_SIZE))
+        IMAGES[piece] = p.transform.scale(p.image.load("image/" + piece + ".png"), (SQ_SIZE - 10, SQ_SIZE - 10))
 
 
 def drawBoard(screen):
@@ -30,7 +30,7 @@ def drawPieces(screen, board):
         for c in range(C_DIMENSION):
             piece = board[r][c]
             if piece != "--":
-                screen.blit(IMAGES[piece], p.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
+                screen.blit(IMAGES[piece], p.Rect(c * SQ_SIZE + 5, r * SQ_SIZE + 5, SQ_SIZE, SQ_SIZE))
 
 
 def drawGameState(screen, gs):
