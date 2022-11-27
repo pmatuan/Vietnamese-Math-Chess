@@ -1,3 +1,9 @@
+"""
+Main driver file.
+Handling user input.
+Displaying current GameStatus object.
+"""
+
 import pygame as p
 from VietnameseMathChess import ChessEngine
 
@@ -11,13 +17,21 @@ IMAGES = {}
 
 
 def loadImages():
-    pieces = ["ba", "bb", "bc", "bd", "be", "bf", "bg", "bh", "bi", "bj",
-              "ra", "rb", "rc", "rd", "re", "rf", "rg", "rh", "ri", "rj"]
+    """
+    Initialize a global directory of images.
+    This will be called exactly once in the main.
+    """
+    pieces = ["b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9",
+              "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9"]
     for piece in pieces:
         IMAGES[piece] = p.transform.scale(p.image.load("image/" + piece + ".png"), (SQ_SIZE - 10, SQ_SIZE - 10))
 
 
 def drawBoard(screen):
+    """
+    Draw the squares on the board.
+    The top left square is always light.
+    """
     colors = [p.Color("white"), p.Color("bisque3")]
     for r in range(R_DIMENSION):
         for c in range(C_DIMENSION):
@@ -26,6 +40,9 @@ def drawBoard(screen):
 
 
 def drawPieces(screen, board):
+    """
+    Draw the pieces on the board using the current game_state.board
+    """
     for r in range(R_DIMENSION):
         for c in range(C_DIMENSION):
             piece = board[r][c]
@@ -34,11 +51,18 @@ def drawPieces(screen, board):
 
 
 def drawGameState(screen, gs):
+    """
+    Responsible for all the graphics within current game state.
+    """
     drawBoard(screen)
     drawPieces(screen, gs.board)
 
 
 def main():
+    """
+    The main driver for our code.
+    This will handle user input and updating the graphics.
+    """
     p.init()
     screen = p.display.set_mode((WIDTH, HEIGHT))
     clock = p.time.Clock()
