@@ -91,6 +91,9 @@ def main():
                     gs.makeMove(move)
                     sqSelected = ()     # reset user clicks
                     playerClicks = []
+            elif event.type == p.KEYDOWN:
+                if event.key == p.K_z:      # undo when 'z' is pressed
+                    gs.undoMove()
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         p.display.flip()
