@@ -27,6 +27,54 @@ def loadImages():
         IMAGES[piece] = p.transform.scale(p.image.load("image/" + piece + ".png"), (SQ_SIZE - 10, SQ_SIZE - 10))
 
 
+def main():
+    """
+    The main driver for our code.
+    This will handle user input and updating the graphics.
+    """
+    p.init()
+    screen = p.display.set_mode((WIDTH, HEIGHT))
+    clock = p.time.Clock()
+    gs = ChessEngine.GameState()
+    loadImages()
+    running = True
+    sqSelected = ()  # no square is selected, keep track of the last click of the user (tuple: (row, col))
+    playerClicks = []  # keep track of the player clicks
+    while running:
+        for event in p.event.get():
+            if event.type == p.QUIT:
+                running = False
+            elif event.type == p.MOUSEBUTTONDOWN:
+                location = p.mouse.get_pos()  # (x,y) location of mouse
+                col = location[0] // SQ_SIZE
+                row = location[1] // SQ_SIZE
+                if sqSelected == (row, col):  # the user clicked the same square twice
+                    sqSelected = ()  # deselect
+                    playerClicks = []  # clear player clicks
+                else:
+                    sqSelected = (row, col)
+                    playerClicks.append(sqSelected)  # append for both 1st and 2nd clicks
+                if len(playerClicks) == 2:  # after 2 click
+                    move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
+                    gs.makeMove(move)
+                    sqSelected = ()  # reset user clicks
+                    playerClicks = []
+            elif event.type == p.KEYDOWN:
+                if event.key == p.K_z:  # undo when 'z' is pressed
+                    gs.undoMove()
+        drawGameState(screen, gs)
+        clock.tick(MAX_FPS)
+        p.display.flip()
+
+
+def drawGameState(screen, gs):
+    """
+    Responsible for all the graphics within current game state.
+    """
+    drawBoard(screen)
+    drawPieces(screen, gs.board)
+
+
 def drawBoard(screen):
     """
     Draw the squares on the board.
@@ -48,55 +96,6 @@ def drawPieces(screen, board):
             piece = board[r][c]
             if piece != "--":
                 screen.blit(IMAGES[piece], p.Rect(c * SQ_SIZE + 5, r * SQ_SIZE + 5, SQ_SIZE, SQ_SIZE))
-
-
-def drawGameState(screen, gs):
-    """
-    Responsible for all the graphics within current game state.
-    """
-    drawBoard(screen)
-    drawPieces(screen, gs.board)
-
-
-def main():
-    """
-    The main driver for our code.
-    This will handle user input and updating the graphics.
-    """
-    p.init()
-    screen = p.display.set_mode((WIDTH, HEIGHT))
-    clock = p.time.Clock()
-    screen.fill(p.Color("white"))
-    gs = ChessEngine.GameState()
-    loadImages()
-    running = True
-    sqSelected = ()  # no square is selected, keep track of the last click of the user (tuple: (row, col))
-    playerClicks = []   # keep track of the player clicks
-    while running:
-        for event in p.event.get():
-            if event.type == p.QUIT:
-                running = False
-            elif event.type == p.MOUSEBUTTONDOWN:
-                location = p.mouse.get_pos()  # (x,y) location of mouse
-                col = location[0] // SQ_SIZE
-                row = location[1] // SQ_SIZE
-                if sqSelected == (row, col):    # the user clicked the same square twice
-                    sqSelected = ()     # deselect
-                    playerClicks = []   # clear player clicks
-                else:
-                    sqSelected = (row, col)
-                    playerClicks.append(sqSelected)     # append for both 1st and 2nd clicks
-                if len(playerClicks) == 2:  # after 2 click
-                    move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
-                    gs.makeMove(move)
-                    sqSelected = ()     # reset user clicks
-                    playerClicks = []
-            elif event.type == p.KEYDOWN:
-                if event.key == p.K_z:      # undo when 'z' is pressed
-                    gs.undoMove()
-        drawGameState(screen, gs)
-        clock.tick(MAX_FPS)
-        p.display.flip()
 
 
 if __name__ == '__main__':

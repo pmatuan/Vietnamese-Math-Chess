@@ -32,8 +32,8 @@ class GameState:
     def makeMove(self, move):
         self.board[move.startRow][move.startCol] = "--"
         self.board[move.endRow][move.endCol] = move.pieceMoved
-        self.moveLog.append(move)   # log the move so we can undo it later
-        self.redToMove = not self.redToMove     # swap player
+        self.moveLog.append(move)  # log the move so we can undo it later
+        self.redToMove = not self.redToMove  # swap player
 
     '''
     Undo the last move made
@@ -45,6 +45,7 @@ class GameState:
             self.board[move.startRow][move.startCol] = move.pieceMoved
             self.board[move.endRow][move.endCol] = move.pieceCaptured
             self.redToMove = not self.redToMove  # switch turns back
+
 
 class Move:
     # in chess, fields on the board are described by two symbols, one of them being number between 1-8 (which is
