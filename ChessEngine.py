@@ -77,21 +77,17 @@ class GameState:
     def getMoveWithDirection(self, r, c, piece, direction, moves):
         enemyColor = "b" if self.redToMove else "r"
         for d in direction:
-            for row in range(1, piece + 1):
-                for col in range(1, piece + 1):
-                    endRow = r + d[0] * row
-                    endCol = c + d[1] * col
-                    if 0 <= endRow < 11 and 0 <= endCol < 9:  # on board
-                        endPiece = self.board[endRow][endCol]
-                        if endPiece == "--":  # empty space valid
-                            moves.append(Move((r, c), (endRow, endCol), self.board))
-                        elif endPiece[0] == enemyColor:  # enemy piece valid
-                            moves.append(Move((r, c), (endRow, endCol), self.board))
-                            break
-                        else:
-                            break
+            for i in range(1, piece + 1):
+                endRow = r + d[0] * i
+                endCol = c + d[1] * i
+                if 0 <= endRow < 11 and 0 <= endCol < 9:  # on board
+                    endPiece = self.board[endRow][endCol]
+                    if endPiece == "--":  # empty space valid
+                        moves.append(Move((r, c), (endRow, endCol), self.board))
                     else:
                         break
+                else:
+                    break
 
 
 class Move:
