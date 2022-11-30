@@ -51,7 +51,8 @@ class GameState:
     '''
 
     def getValidMoves(self):
-        return self.getAllPossibleMoves()
+        moves = self.getAllPossibleMoves()
+        return moves
 
     '''
     All moves without considering checks
@@ -70,14 +71,14 @@ class GameState:
     def getPieceMove(self, r, c, piece, moves):
         cross_direction = ((-1, -1), (-1, 1), (1, -1), (1, 1))
         horizon_vertical_direction = ((-1, 0), (0, -1), (1, 0), (0, 1))
-        self.getMoveWithDirection(r, c, piece + 1, cross_direction, moves)
-        self.getMoveWithDirection(r, c, piece + 1, horizon_vertical_direction, moves)
+        self.getMoveWithDirection(r, c, piece, cross_direction, moves)
+        self.getMoveWithDirection(r, c, piece, horizon_vertical_direction, moves)
 
     def getMoveWithDirection(self, r, c, piece, direction, moves):
         enemyColor = "b" if self.redToMove else "r"
         for d in direction:
-            for row in range(1, piece):
-                for col in range(1, piece):
+            for row in range(1, piece + 1):
+                for col in range(1, piece + 1):
                     endRow = r + d[0] * row
                     endCol = c + d[1] * col
                     if 0 <= endRow < 11 and 0 <= endCol < 9:  # on board

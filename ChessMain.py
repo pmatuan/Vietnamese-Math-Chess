@@ -5,7 +5,7 @@ Displaying current GameStatus object.
 """
 
 import pygame as p
-from VietnameseMathChess import ChessEngine
+import ChessEngine
 
 WIDTH = 576
 HEIGHT = 704
