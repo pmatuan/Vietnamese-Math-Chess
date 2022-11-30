@@ -5,7 +5,8 @@ Displaying current GameStatus object.
 """
 
 import pygame as p
-import ChessEngine
+from Engine.GameState import GameState
+from Engine.Move import Move
 
 WIDTH = 576
 HEIGHT = 704
@@ -35,7 +36,7 @@ def main():
     p.init()
     screen = p.display.set_mode((WIDTH, HEIGHT))
     clock = p.time.Clock()
-    gs = ChessEngine.GameState()
+    gs = GameState()
     validMoves = gs.getValidMoves()
     moveMade = False  # flag variable for when a move is made
     loadImages()
@@ -57,7 +58,7 @@ def main():
                     sqSelected = (row, col)
                     playerClicks.append(sqSelected)  # append for both 1st and 2nd clicks
                 if len(playerClicks) == 2:  # after 2 click
-                    move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
+                    move = Move(playerClicks[0], playerClicks[1], gs.board)
                     if move in validMoves:
                         gs.makeMove(move)
                         moveMade = True
