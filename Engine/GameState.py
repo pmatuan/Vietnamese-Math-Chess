@@ -42,13 +42,6 @@ class GameState:
             self.board[move.endRow][move.endCol] = move.pieceCaptured
             self.redToMove = not self.redToMove  # switch turns back
 
-    '''
-    All moves considering checks
-    '''
-
-    def getValidMoves(self):
-        moves = self.getAllPossibleMoves()
-        return moves
 
     '''
     All moves without considering checks

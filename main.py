@@ -37,7 +37,7 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
     gs = GameState()
-    validMoves = gs.getValidMoves()
+    validMoves = gs.getAllPossibleMoves()
     moveMade = False  # flag variable for when a move is made
     loadImages()
     running = True
@@ -71,7 +71,7 @@ def main():
                     gs.undoMove()
                     moveMade = True
         if moveMade:
-            validMoves = gs.getValidMoves()
+            validMoves = gs.getAllPossibleMoves()
             moveMade = False
         drawGameState(screen, gs, validMoves, sqSelected)
         clock.tick(MAX_FPS)
