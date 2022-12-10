@@ -4,7 +4,7 @@ Handling user input.
 Displaying current GameStatus object.
 """
 
-import pygame as p
+import pygame
 from Engine.GameState import GameState
 from Engine.Move import Move
 
@@ -25,7 +25,7 @@ def loadImages():
     pieces = ["b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9",
               "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9"]
     for piece in pieces:
-        IMAGES[piece] = p.transform.scale(p.image.load("image/" + piece + ".png"), (SQ_SIZE - 10, SQ_SIZE - 10))
+        IMAGES[piece] = pygame.transform.scale(pygame.image.load("image/" + piece + ".png"), (SQ_SIZE - 10, SQ_SIZE - 10))
 
 
 def main():
@@ -33,9 +33,9 @@ def main():
     The main driver for our code.
     This will handle user input and updating the graphics.
     """
-    p.init()
-    screen = p.display.set_mode((WIDTH, HEIGHT))
-    clock = p.time.Clock()
+    pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    clock = pygame.time.Clock()
     gs = GameState()
     validMoves = gs.getValidMoves()
     moveMade = False  # flag variable for when a move is made
@@ -44,11 +44,11 @@ def main():
     sqSelected = ()  # no square is selected, keep track of the last click of the user (tuple: (row, col))
     playerClicks = []  # keep track of the player clicks
     while running:
-        for event in p.event.get():
-            if event.type == p.QUIT:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 running = False
-            elif event.type == p.MOUSEBUTTONDOWN:
-                location = p.mouse.get_pos()  # (x,y) location of mouse
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                location = pygame.mouse.get_pos()  # (x,y) location of mouse
                 col = location[0] // SQ_SIZE
                 row = location[1] // SQ_SIZE
                 if sqSelected == (row, col):  # the user clicked the same square twice
@@ -66,23 +66,44 @@ def main():
                         playerClicks = []
                     else:
                         playerClicks = [sqSelected]
-            elif event.type == p.KEYDOWN:
-                if event.key == p.K_z:  # undo when 'z' is pressed
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_z:  # undo when 'z' is pressed
                     gs.undoMove()
                     moveMade = True
         if moveMade:
             validMoves = gs.getValidMoves()
             moveMade = False
-        drawGameState(screen, gs)
+        drawGameState(screen, gs, validMoves, sqSelected)
         clock.tick(MAX_FPS)
-        p.display.flip()
+        pygame.display.flip()
 
 
-def drawGameState(screen, gs):
+'''
+Highlight square selected and moves for piece selected
+'''
+
+
+def highlightSquares(screen, gs, validMoves, sqSelected):
+    if sqSelected != ():
+        r, c = sqSelected
+        if gs.board[r][c][0] == ('r' if gs.redToMove else 'b'):  # sqSelected is a piece that can be moved
+            # highlight selected square
+            s = pygame.Surface((SQ_SIZE, SQ_SIZE))
+            s.set_alpha(100)  # transparency value -> 0 transparent; 255 opaque
+            s.fill(pygame.Color('blue'))
+            screen.blit(s, (c * SQ_SIZE, r * SQ_SIZE))
+            s.fill(pygame.Color('yellow'))
+            for move in validMoves:
+                if move.startRow == r and move.startCol == c:
+                    screen.blit(s, (move.endCol * SQ_SIZE, move.endRow * SQ_SIZE))
+
+
+def drawGameState(screen, gs, validMoves, sqSelected):
     """
     Responsible for all the graphics within current game state.
     """
     drawBoard(screen)
+    highlightSquares(screen, gs, validMoves, sqSelected)
     drawPieces(screen, gs.board)
 
 
@@ -91,11 +112,11 @@ def drawBoard(screen):
     Draw the squares on the board.
     The top left square is always light.
     """
-    colors = [p.Color("white"), p.Color("bisque3")]
+    colors = [pygame.Color("white"), pygame.Color("bisque3")]
     for r in range(R_DIMENSION):
         for c in range(C_DIMENSION):
             color = colors[((r + c) % 2)]
-            p.draw.rect(screen, color, p.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
+            pygame.draw.rect(screen, color, pygame.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 
 def drawPieces(screen, board):
@@ -106,7 +127,7 @@ def drawPieces(screen, board):
         for c in range(C_DIMENSION):
             piece = board[r][c]
             if piece != "--":
-                screen.blit(IMAGES[piece], p.Rect(c * SQ_SIZE + 5, r * SQ_SIZE + 5, SQ_SIZE, SQ_SIZE))
+                screen.blit(IMAGES[piece], pygame.Rect(c * SQ_SIZE + 5, r * SQ_SIZE + 5, SQ_SIZE, SQ_SIZE))
 
 
 if __name__ == '__main__':
