@@ -42,7 +42,6 @@ class GameState:
             self.board[move.endRow][move.endCol] = move.pieceCaptured
             self.redToMove = not self.redToMove  # switch turns back
 
-
     '''
     All moves without considering checks
     '''
@@ -55,16 +54,14 @@ class GameState:
                 if (turn == 'r' and self.redToMove) or (turn == 'b' and not self.redToMove):
                     piece = int(self.board[r][c][1])
                     self.getPieceMove(r, c, piece, moves)
+                    self.getAttackMove(r, c, turn, piece, moves)
         return moves
 
     def getPieceMove(self, r, c, piece, moves):
-        cross_direction = ((-1, -1), (-1, 1), (1, -1), (1, 1))
-        horizon_vertical_direction = ((-1, 0), (0, -1), (1, 0), (0, 1))
-        self.getMoveWithDirection(r, c, piece, cross_direction, moves)
-        self.getMoveWithDirection(r, c, piece, horizon_vertical_direction, moves)
+        direction = ((-1, -1), (-1, 1), (1, -1), (1, 1), (-1, 0), (0, -1), (1, 0), (0, 1))
+        self.getMoveWithDirection(r, c, piece, direction, moves)
 
     def getMoveWithDirection(self, r, c, piece, direction, moves):
-        enemyColor = "b" if self.redToMove else "r"
         for d in direction:
             for i in range(1, piece + 1):
                 endRow = r + d[0] * i
@@ -74,6 +71,38 @@ class GameState:
                     if endPiece == "--":  # empty space valid
                         moves.append(Move((r, c), (endRow, endCol), self.board))
                     else:
+                        break
+                else:
+                    break
+
+    def getAttackMove(self, r, c, turn, piece, moves):
+        direction = ((-1, -1), (-1, 1), (1, -1), (1, 1), (-1, 0), (0, -1), (1, 0), (0, 1))
+        for (i, j) in direction:
+            if 0 <= r + i < 11 and 0 <= c + j < 9:
+                team = self.board[r + i][c + j][0]
+                if team == turn:
+                    team_piece = int(self.board[r + i][c + j][1])
+                    if team_piece == 0:
+                        continue
+                    attack_add = int((piece + team_piece) % 10)
+                    attack_sub = int((piece - team_piece) % 10)
+                    attack_multi = int((piece * team_piece) % 10)
+                    attack_division = int((piece / team_piece) % 10)
+                    attack_remainder = int(piece % team_piece)
+                    attack = [attack_add, attack_sub, attack_multi, attack_division, attack_remainder]
+                    self.getAttackWithDirection(r, c, team, attack, (i, j), moves)
+
+    def getAttackWithDirection(self, r, c, team, attack, direction, moves):
+        for a in attack:
+            for i in range(1, a + 1):
+                endRow = r + direction[0] * i
+                endCol = c + direction[1] * i
+                if 0 <= endRow < 11 and 0 <= endCol < 9:  # on board
+                    endPiece = self.board[endRow][endCol]
+                    if endPiece == "--" or endPiece[0] == team:  # empty space valid
+                        continue
+                    else:
+                        moves.append(Move((r, c), (endRow, endCol), self.board))
                         break
                 else:
                     break

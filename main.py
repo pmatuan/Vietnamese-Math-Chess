@@ -25,7 +25,8 @@ def loadImages():
     pieces = ["b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9",
               "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9"]
     for piece in pieces:
-        IMAGES[piece] = pygame.transform.scale(pygame.image.load("image/" + piece + ".png"), (SQ_SIZE - 10, SQ_SIZE - 10))
+        IMAGES[piece] = pygame.transform.scale(pygame.image.load("image/" + piece + ".png"),
+                                               (SQ_SIZE - 10, SQ_SIZE - 10))
 
 
 def main():
