@@ -40,7 +40,7 @@ class GameState:
             move = self.moveLog.pop()
             self.board[move.startRow][move.startCol] = move.pieceMoved
             self.board[move.endRow][move.endCol] = move.pieceCaptured
-            self.redToMove = not self.redToMove  # switch turns back
+            self.redToMove = not self.redToMove  # switch turn back
 
     '''
     All moves without considering checks
@@ -50,16 +50,16 @@ class GameState:
         moves = []
         for r in range(len(self.board)):
             for c in range(len(self.board[r])):
-                turn = self.board[r][c][0]
-                if (turn == 'r' and self.redToMove) or (turn == 'b' and not self.redToMove):
+                piece_color = self.board[r][c][0]
+                if (piece_color == 'r' and self.redToMove) or (piece_color == 'b' and not self.redToMove):
                     piece = int(self.board[r][c][1])
                     self.getPieceMove(r, c, piece, moves)
-                    self.getAttackMove(r, c, turn, piece, moves)
+                    self.getAttackMove(r, c, piece_color, piece, moves)
         return moves
 
     def getPieceMove(self, r, c, piece, moves):
-        direction = ((-1, -1), (-1, 1), (1, -1), (1, 1), (-1, 0), (0, -1), (1, 0), (0, 1))
-        self.getMoveWithDirection(r, c, piece, direction, moves)
+        directions = ((-1, -1), (-1, 1), (1, -1), (1, 1), (-1, 0), (0, -1), (1, 0), (0, 1))
+        self.getMoveWithDirection(r, c, piece, directions, moves)
 
     def getMoveWithDirection(self, r, c, piece, direction, moves):
         for d in direction:
@@ -75,34 +75,49 @@ class GameState:
                 else:
                     break
 
-    def getAttackMove(self, r, c, turn, piece, moves):
-        direction = ((-1, -1), (-1, 1), (1, -1), (1, 1), (-1, 0), (0, -1), (1, 0), (0, 1))
-        for (i, j) in direction:
+    def getAttackMove(self, r, c, piece_color, piece, moves):
+        directions = ((-1, -1), (-1, 1), (1, -1), (1, 1), (-1, 0), (0, -1), (1, 0), (0, 1))
+        for (i, j) in directions:
             if 0 <= r + i < 11 and 0 <= c + j < 9:
                 team = self.board[r + i][c + j][0]
-                if team == turn:
+                if team == piece_color:
                     team_piece = int(self.board[r + i][c + j][1])
                     if team_piece == 0:
                         continue
-                    attack_add = int((piece + team_piece) % 10)
-                    attack_sub = int((piece - team_piece) % 10)
-                    attack_multi = int((piece * team_piece) % 10)
+                    attack_add = (piece + team_piece) % 10
+                    attack_sub = (piece - team_piece) % 10
+                    attack_multi = (piece * team_piece) % 10
                     attack_division = int((piece / team_piece) % 10)
-                    attack_remainder = int(piece % team_piece)
+                    attack_remainder = piece % team_piece
                     attack = [attack_add, attack_sub, attack_multi, attack_division, attack_remainder]
-                    self.getAttackWithDirection(r, c, team, attack, (i, j), moves)
+                    self.getAttackWithDirection((r, c), attack, (i, j), moves)
 
-    def getAttackWithDirection(self, r, c, team, attack, direction, moves):
+    def getAttackWithDirection(self, piece_state, attack, direction, moves):
+        enemyColor = "b" if self.redToMove else "r"
+        r, c = piece_state
+        i, j = direction
+        r, c = (r + i), (c + j)
         for a in attack:
-            for i in range(1, a + 1):
+            if a == 0:
+                continue
+            attack_check = True
+            for i in range(1, a):
                 endRow = r + direction[0] * i
                 endCol = c + direction[1] * i
                 if 0 <= endRow < 11 and 0 <= endCol < 9:  # on board
                     endPiece = self.board[endRow][endCol]
-                    if endPiece == "--" or endPiece[0] == team:  # empty space valid
+                    if endPiece == "--":
                         continue
                     else:
-                        moves.append(Move((r, c), (endRow, endCol), self.board))
+                        attack_check = False
                         break
                 else:
+                    attack_check = False
                     break
+            if attack_check:
+                endRow = r + direction[0] * a
+                endCol = c + direction[1] * a
+                if 0 <= endRow < 11 and 0 <= endCol < 9:
+                    endPiece = self.board[endRow][endCol]
+                    if endPiece[0] == enemyColor:
+                        moves.append(Move(piece_state, (endRow, endCol), self.board))
