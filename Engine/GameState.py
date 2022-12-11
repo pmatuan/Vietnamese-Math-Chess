@@ -25,6 +25,13 @@ class GameState:
         self.red_to_move = True
         self.move_log = []
 
+    def check(self):
+        if self.board[1][4] != "b0":
+            return False, True
+        elif self.board[9][4] != "r0":
+            return True, False
+        return False, False
+
     def makeMove(self, move):
         self.board[move.start_row][move.start_col] = "--"
         self.board[move.end_row][move.end_col] = move.piece_moved
@@ -87,7 +94,7 @@ class GameState:
                     attack_add = (piece + team_piece) % 10
                     attack_sub = (piece - team_piece) % 10
                     attack_multi = (piece * team_piece) % 10
-                    attack_division = int((piece / team_piece) % 10)
+                    attack_division = (piece // team_piece) % 10
                     attack_remainder = piece % team_piece
                     attack = [attack_add, attack_sub, attack_multi, attack_division, attack_remainder]
                     self.getAttackWithDirection((r, c), attack, (i, j), moves)

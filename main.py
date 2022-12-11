@@ -5,6 +5,7 @@ Displaying current GameStatus object.
 """
 
 import pygame
+import time
 from Engine.GameState import GameState
 from Engine.Move import Move
 
@@ -63,6 +64,13 @@ def main():
                     if move in valid_moves:
                         gs.makeMove(move)
                         move_made = True
+                        red_lose, blue_lose = gs.check()
+                        if red_lose:
+                            loser("RED LOSE", screen)
+                            running = False
+                        if blue_lose:
+                            loser("BLUE LOSE", screen)
+                            running = False
                         sq_selected = ()  # reset user clicks
                         player_clicks = []
                     else:
@@ -129,6 +137,16 @@ def drawPieces(screen, board):
             piece = board[r][c]
             if piece != "--":
                 screen.blit(IMAGES[piece], pygame.Rect(c * SQ_SIZE + 5, r * SQ_SIZE + 5, SQ_SIZE, SQ_SIZE))
+
+def loser(message, screen):
+    font = pygame.font.Font('freesansbold.ttf', 32)
+    text = font.render(message, True, pygame.Color('green'))
+    textRect = text.get_rect()
+    textRect.center = (WIDTH // 2, HEIGHT // 2)
+    screen.fill(pygame.Color('white'))
+    screen.blit(text, textRect)
+    pygame.display.update()
+    time.sleep(5)
 
 
 if __name__ == '__main__':
