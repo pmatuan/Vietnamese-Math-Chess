@@ -38,12 +38,12 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
     gs = GameState()
-    validMoves = gs.getAllPossibleMoves()
-    moveMade = False  # flag variable for when a move is made
+    valid_moves = gs.getAllPossibleMoves()
+    move_made = False  # flag variable for when a move is made
     loadImages()
     running = True
-    sqSelected = ()  # no square is selected, keep track of the last click of the user (tuple: (row, col))
-    playerClicks = []  # keep track of the player clicks
+    sq_selected = ()  # no square is selected, keep track of the last click of the user (tuple: (row, col))
+    player_clicks = []  # keep track of the player clicks
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -52,29 +52,29 @@ def main():
                 location = pygame.mouse.get_pos()  # (x,y) location of mouse
                 col = location[0] // SQ_SIZE
                 row = location[1] // SQ_SIZE
-                if sqSelected == (row, col):  # the user clicked the same square twice
-                    sqSelected = ()  # deselect
-                    playerClicks = []  # clear player clicks
+                if sq_selected == (row, col):  # the user clicked the same square twice
+                    sq_selected = ()  # deselect
+                    player_clicks = []  # clear player clicks
                 else:
-                    sqSelected = (row, col)
-                    playerClicks.append(sqSelected)  # append for both 1st and 2nd clicks
-                if len(playerClicks) == 2:  # after 2 click
-                    move = Move(playerClicks[0], playerClicks[1], gs.board)
-                    if move in validMoves:
+                    sq_selected = (row, col)
+                    player_clicks.append(sq_selected)  # append for both 1st and 2nd clicks
+                if len(player_clicks) == 2:  # after 2 click
+                    move = Move(player_clicks[0], player_clicks[1], gs.board)
+                    if move in valid_moves:
                         gs.makeMove(move)
-                        moveMade = True
-                        sqSelected = ()  # reset user clicks
-                        playerClicks = []
+                        move_made = True
+                        sq_selected = ()  # reset user clicks
+                        player_clicks = []
                     else:
-                        playerClicks = [sqSelected]
+                        player_clicks = [sq_selected]
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_z:  # undo when 'z' is pressed
                     gs.undoMove()
-                    moveMade = True
-        if moveMade:
-            validMoves = gs.getAllPossibleMoves()
-            moveMade = False
-        drawGameState(screen, gs, validMoves, sqSelected)
+                    move_made = True
+        if move_made:
+            valid_moves = gs.getAllPossibleMoves()
+            move_made = False
+        drawGameState(screen, gs, valid_moves, sq_selected)
         clock.tick(MAX_FPS)
         pygame.display.flip()
 
@@ -84,27 +84,27 @@ Highlight square selected and moves for piece selected
 '''
 
 
-def highlightSquares(screen, gs, validMoves, sqSelected):
-    if sqSelected != ():
-        r, c = sqSelected
-        if gs.board[r][c][0] == ('r' if gs.redToMove else 'b'):  # sqSelected is a piece that can be moved
+def highlightSquares(screen, gs, valid_moves, sq_selected):
+    if sq_selected != ():
+        r, c = sq_selected
+        if gs.board[r][c][0] == ('r' if gs.red_to_move else 'b'):  # sq_selected is a piece that can be moved
             # highlight selected square
             s = pygame.Surface((SQ_SIZE, SQ_SIZE))
             s.set_alpha(100)  # transparency value -> 0 transparent; 255 opaque
             s.fill(pygame.Color('blue'))
             screen.blit(s, (c * SQ_SIZE, r * SQ_SIZE))
             s.fill(pygame.Color('yellow'))
-            for move in validMoves:
-                if move.startRow == r and move.startCol == c:
-                    screen.blit(s, (move.endCol * SQ_SIZE, move.endRow * SQ_SIZE))
+            for move in valid_moves:
+                if move.start_row == r and move.start_col == c:
+                    screen.blit(s, (move.end_col * SQ_SIZE, move.end_row * SQ_SIZE))
 
 
-def drawGameState(screen, gs, validMoves, sqSelected):
+def drawGameState(screen, gs, valid_moves, sq_selected):
     """
     Responsible for all the graphics within current game state.
     """
     drawBoard(screen)
-    highlightSquares(screen, gs, validMoves, sqSelected)
+    highlightSquares(screen, gs, valid_moves, sq_selected)
     drawPieces(screen, gs.board)
 
 
