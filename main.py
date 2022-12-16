@@ -45,36 +45,37 @@ def main():
     running = True
     sq_selected = ()  # no square is selected, keep track of the last click of the user (tuple: (row, col))
     player_clicks = []  # keep track of the player clicks
+    game_over = False
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                location = pygame.mouse.get_pos()  # (x,y) location of mouse
-                col = location[0] // SQ_SIZE
-                row = location[1] // SQ_SIZE
-                if sq_selected == (row, col):  # the user clicked the same square twice
-                    sq_selected = ()  # deselect
-                    player_clicks = []  # clear player clicks
-                else:
-                    sq_selected = (row, col)
-                    player_clicks.append(sq_selected)  # append for both 1st and 2nd clicks
-                if len(player_clicks) == 2:  # after 2 click
-                    move = Move(player_clicks[0], player_clicks[1], gs.board)
-                    if move in valid_moves:
-                        gs.makeMove(move)
-                        move_made = True
-                        red_lose, blue_lose = gs.check()
-                        if red_lose:
-                            loser("RED LOSE", screen)
-                            running = False
-                        if blue_lose:
-                            loser("BLUE LOSE", screen)
-                            running = False
-                        sq_selected = ()  # reset user clicks
-                        player_clicks = []
+                if not game_over:
+                    location = pygame.mouse.get_pos()  # (x,y) location of mouse
+                    col = location[0] // SQ_SIZE
+                    row = location[1] // SQ_SIZE
+                    if sq_selected == (row, col):  # the user clicked the same square twice
+                        sq_selected = ()  # deselect
+                        player_clicks = []  # clear player clicks
                     else:
-                        player_clicks = [sq_selected]
+                        sq_selected = (row, col)
+                        player_clicks.append(sq_selected)  # append for both 1st and 2nd clicks
+                    if len(player_clicks) == 2:  # after 2 click
+                        move = Move(player_clicks[0], player_clicks[1], gs.board)
+                        if move in valid_moves:
+                            gs.makeMove(move)
+                            move_made = True
+                            game_over = gs.check()
+                            if game_over:
+                                if gs.red_to_move:
+                                    loser("Red lose", screen)
+                                else:
+                                    loser("Blue lose", screen)
+                            sq_selected = ()  # reset user clicks
+                            player_clicks = []
+                        else:
+                            player_clicks = [sq_selected]
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_z:  # undo when 'z' is pressed
                     gs.undoMove()
@@ -137,6 +138,7 @@ def drawPieces(screen, board):
             piece = board[r][c]
             if piece != "--":
                 screen.blit(IMAGES[piece], pygame.Rect(c * SQ_SIZE + 5, r * SQ_SIZE + 5, SQ_SIZE, SQ_SIZE))
+
 
 def loser(message, screen):
     font = pygame.font.Font('freesansbold.ttf', 32)

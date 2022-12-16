@@ -26,11 +26,9 @@ class GameState:
         self.move_log = []
 
     def check(self):
-        if self.board[1][4] != "b0":
-            return False, True
-        elif self.board[9][4] != "r0":
-            return True, False
-        return False, False
+        if self.board[1][4] != "b0" or self.board[9][4] != "r0":
+            return True
+        return False
 
     def makeMove(self, move):
         self.board[move.start_row][move.start_col] = "--"
