@@ -86,6 +86,7 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_z:  # undo when 'z' is pressed
                     gs.undoMove()
+                    gs.undoMove()
                     move_made = True
 
         #AI move finder
@@ -93,7 +94,7 @@ def main():
             ################################
             AI = Negamax(valid_moves)  # AI
             # or AI = NegaScout(valid_moves)
-            AIMove = AI.findMove()
+            AIMove = AI.findMove(gs)
             gs.makeMove(AIMove)
             move_made = True
             ################################

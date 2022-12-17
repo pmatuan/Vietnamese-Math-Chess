@@ -89,10 +89,10 @@ class GameState:
                     team_piece = int(self.board[r + i][c + j][1])
                     if team_piece == 0:
                         continue
-                    attack_add = (piece + team_piece) % 10
-                    attack_sub = (piece - team_piece) % 10
-                    attack_multi = (piece * team_piece) % 10
-                    attack_division = (piece // team_piece) % 10
+                    attack_add = (piece + team_piece)
+                    attack_sub = (piece - team_piece)
+                    attack_multi = (piece * team_piece)
+                    attack_division = (piece // team_piece)
                     attack_remainder = piece % team_piece
                     attack = [attack_add, attack_sub, attack_multi, attack_division, attack_remainder]
                     self.getAttackWithDirection((r, c), attack, (i, j), moves)
@@ -103,12 +103,13 @@ class GameState:
         i, j = direction
         r, c = (r + i), (c + j)     # Team state
         for a in attack:
-            if a == 0:
+            if a <= 0:
                 continue
+            a = a % 10
             attack_check = True
-            for i in range(1, a):
-                end_row = r + direction[0] * i
-                end_col = c + direction[1] * i
+            for k in range(1, a):
+                end_row = r + direction[0] * k
+                end_col = c + direction[1] * k
                 if 0 <= end_row < 11 and 0 <= end_col < 9:  # on board
                     end_piece = self.board[end_row][end_col]
                     if end_piece == "--":
