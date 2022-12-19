@@ -10,6 +10,7 @@ from Engine.GameState import GameState
 from Engine.Move import Move
 from AI.Negamax import Negamax
 from AI.Minimax import Minimax
+from AI.Greedy import Greedy
 
 WIDTH = 576
 HEIGHT = 704
@@ -48,8 +49,9 @@ def main():
     sq_selected = ()  # no square is selected, keep track of the last click of the user (tuple: (row, col))
     player_clicks = []  # keep track of the player clicks
     game_over = False
-    player_one = True # if a human playing red, then this will be True. If an AI is playing, then false
-    player_two = False # same as above but for blue
+    player_one = True  # if a human playing red, then this will be True. If an AI is playing, then false
+    player_two = False  # same as above but for blue
+    AI = Negamax() # Greedy / Minimax / Negamax
     while running:
         human_turn = (gs.red_to_move and player_one) or (not gs.red_to_move and player_two)
         for event in pygame.event.get():
@@ -89,11 +91,9 @@ def main():
                     gs.undoMove()
                     move_made = True
 
-        #AI move finder
+        # AI move finder
         if not game_over and not human_turn:
             ################################
-            AI = Negamax()  # AI
-            # or AI = NegaScout(valid_moves)
             AIMove = AI.findMove(gs, valid_moves)
             gs.makeMove(AIMove)
             move_made = True
