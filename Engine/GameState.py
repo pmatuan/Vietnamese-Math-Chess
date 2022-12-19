@@ -101,7 +101,7 @@ class GameState:
         enemy_color = "b" if self.red_to_move else "r"
         r, c = piece_state
         i, j = direction
-        r, c = (r + i), (c + j)     # Team state
+        r, c = (r + i), (c + j)  # Team state
         for a in attack:
             if a <= 0:
                 continue
