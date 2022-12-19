@@ -58,6 +58,8 @@ class GameState:
                 piece_color = self.board[r][c][0]
                 if (piece_color == 'r' and self.red_to_move) or (piece_color == 'b' and not self.red_to_move):
                     piece = int(self.board[r][c][1])
+                    if piece == 0:
+                        continue
                     self.getPieceMove(r, c, piece, moves)
                     self.getAttackMove(r, c, piece_color, piece, moves)
         return moves
