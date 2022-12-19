@@ -9,7 +9,7 @@ import time
 from Engine.GameState import GameState
 from Engine.Move import Move
 from AI.Negamax import Negamax
-from AI.NegaScout import NegaScout
+from AI.Minimax import Minimax
 
 WIDTH = 576
 HEIGHT = 704
@@ -92,9 +92,9 @@ def main():
         #AI move finder
         if not game_over and not human_turn:
             ################################
-            AI = Negamax(valid_moves)  # AI
+            AI = Negamax()  # AI
             # or AI = NegaScout(valid_moves)
-            AIMove = AI.findMove(gs)
+            AIMove = AI.findMove(gs, valid_moves)
             gs.makeMove(AIMove)
             move_made = True
             ################################
