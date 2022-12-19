@@ -4,7 +4,7 @@ class Negamax:
     def __init__(self):
         self.CHECKMATE = 45
         self.STALEMATE = 0
-        self.DEPTH = 2
+        self.DEPTH = 3
         self.next_move = None
 
     def scoreMaterial(self, board):
@@ -23,19 +23,23 @@ class Negamax:
                         score -= int(square[1])
         return score
     def findMove(self, gs, valid_moves):
-        self.findBestMove(gs, valid_moves, self.DEPTH, 1 if gs.red_to_move else -1)
+        self.findBestMove(gs, valid_moves, self.DEPTH, -self.CHECKMATE, self.CHECKMATE, 1 if gs.red_to_move else -1)
         return self.next_move
-    def findBestMove(self, gs, valid_moves, depth, turn):
+    def findBestMove(self, gs, valid_moves, depth, alpha, beta, turn):
         if depth == 0:
             return turn * self.scoreMaterial(gs.board)
         bestValue = -self.CHECKMATE
         for move in valid_moves:
             gs.makeMove(move)
             next_moves = gs.getAllPossibleMoves()
-            score = - self.findBestMove(gs, next_moves, depth - 1, -turn)
+            score = - self.findBestMove(gs, next_moves, depth - 1, -beta, -alpha, -turn)
             if score > bestValue:
                 bestValue = score
                 if depth == self.DEPTH:
                     self.next_move = move
             gs.undoMove()
+            if bestValue > alpha:
+                alpha = bestValue
+            if alpha >= beta:
+                break
         return bestValue
