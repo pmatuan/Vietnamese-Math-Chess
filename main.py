@@ -54,6 +54,14 @@ def main():
     player_two = False  # same as above but for blue
     AI = Negascout() # Greedy / Minimax / Negamax / Negascout
     while running:
+        game_over = gs.check()
+        if game_over:
+            if gs.red_to_move:
+                loser("Red lose", screen)
+                running = False
+            else:
+                loser("Blue lose", screen)
+                running = False
         human_turn = (gs.red_to_move and player_one) or (not gs.red_to_move and player_two)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -74,14 +82,6 @@ def main():
                         if move in valid_moves:
                             gs.makeMove(move)
                             move_made = True
-                            game_over = gs.check()
-                            if game_over:
-                                if gs.red_to_move:
-                                    loser("Red lose", screen)
-                                    running = False
-                                else:
-                                    loser("Blue lose", screen)
-                                    running = False
                             sq_selected = ()  # reset user clicks
                             player_clicks = []
                         else:
@@ -161,6 +161,7 @@ def drawPieces(screen, board):
 
 
 def loser(message, screen):
+    time.sleep(0.5)
     font = pygame.font.Font('freesansbold.ttf', 32)
     text = font.render(message, True, pygame.Color('green'))
     textRect = text.get_rect()

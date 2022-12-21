@@ -11,12 +11,12 @@ class AI:
             for square in row:
                 if square[0] == "r":
                     if int(square[1]) == 0:
-                        score += 1000
+                        score += self.CHECKMATE
                     else:
                         score += int(square[1])
                 elif square[0] == "b":
                     if int(square[1]) == 0:
-                        score -= 1000
+                        score -= self.CHECKMATE
                     else:
                         score -= int(square[1])
         return score
