@@ -7,17 +7,17 @@ class Negascout(AI):
 
     def findMove(self, gs, valid_moves):
         random.shuffle(valid_moves)
-        self.findMoveNegaScoutAlphaBeta(gs, valid_moves, self.DEPTH, -self.CHECKMATE, self.CHECKMATE, 1 if gs.red_to_move else -1)
+        self.findMoveNegaScout(gs, valid_moves, self.DEPTH, -self.CHECKMATE, self.CHECKMATE, 1 if gs.red_to_move else -1)
         return self.next_move
 
-    def findMoveNegaScoutAlphaBeta(self, gs, valid_moves, depth, alpha, beta, turn):
+    def findMoveNegaScout(self, gs, valid_moves, depth, alpha, beta, turn):
         if depth == 0:
             return turn * self.scoreMaterial(gs.board)
         bestValue = -self.CHECKMATE
         for move in valid_moves:
             gs.makeMove(move)
             next_moves = gs.getAllPossibleMoves()
-            score = - self.findMoveNegaScoutAlphaBeta(gs, next_moves, depth - 1, -beta, -alpha, -turn)
+            score = - self.findMoveNegaScout(gs, next_moves, depth - 1, -beta, -alpha, -turn)
             gs.undoMove()
             if score > bestValue:
                 bestValue = score
