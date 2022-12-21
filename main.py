@@ -9,6 +9,7 @@ import time
 from Engine.GameState import GameState
 from Engine.Move import Move
 from AI.Negamax import Negamax
+from AI.Negascout import Negascout
 from AI.Minimax import Minimax
 from AI.Greedy import Greedy
 
@@ -51,7 +52,7 @@ def main():
     game_over = False
     player_one = True  # if a human playing red, then this will be True. If an AI is playing, then false
     player_two = False  # same as above but for blue
-    AI = Negamax() # Greedy / Minimax / Negamax
+    AI = Negascout() # Greedy / Minimax / Negamax / Negascout
     while running:
         human_turn = (gs.red_to_move and player_one) or (not gs.red_to_move and player_two)
         for event in pygame.event.get():

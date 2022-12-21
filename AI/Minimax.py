@@ -1,5 +1,5 @@
 import random
-
+import copy
 from AI.AI import AI
 
 
@@ -16,24 +16,22 @@ class Minimax(AI):
         if red_to_move:
             max_score = -self.CHECKMATE
             for move in valid_moves:
-                gs.makeMove(move)
-                next_moves = gs.getAllPossibleMoves()
+                new_gs = copy.deepcopy(gs)
+                next_moves = new_gs.getAllPossibleMoves()
                 score = self.findMoveMinMax(gs, next_moves, depth - 1, False)
                 if score > max_score:
                     max_score = score
                     if depth == self.DEPTH:
                         self.next_move = move
-                gs.undoMove()
             return max_score
         else:
             min_score = self.CHECKMATE
             for move in valid_moves:
-                gs.makeMove(move)
-                next_moves = gs.getAllPossibleMoves()
+                new_gs = copy.deepcopy(gs)
+                next_moves = new_gs.getAllPossibleMoves()
                 score = self.findMoveMinMax(gs, next_moves, depth - 1, True)
                 if score < min_score:
                     min_score = score
                     if depth == self.DEPTH:
                         self.next_move = move
-                gs.undoMove()
             return min_score
