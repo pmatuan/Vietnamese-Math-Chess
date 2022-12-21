@@ -1,5 +1,5 @@
 import random
-import copy
+
 from AI.AI import AI
 
 
@@ -15,9 +15,10 @@ class Negascout(AI):
             return turn * self.scoreMaterial(gs.board)
         bestValue = -self.CHECKMATE
         for move in valid_moves:
-            new_gs = copy.deepcopy(gs)
-            next_moves = new_gs.getAllPossibleMoves()
-            score = - self.findMoveNegaScoutAlphaBeta(new_gs, next_moves, depth - 1, -beta, -alpha, -turn)
+            gs.makeMove(move)
+            next_moves = gs.getAllPossibleMoves()
+            score = - self.findMoveNegaScoutAlphaBeta(gs, next_moves, depth - 1, -beta, -alpha, -turn)
+            gs.undoMove()
             if score > bestValue:
                 bestValue = score
                 if depth == self.DEPTH:

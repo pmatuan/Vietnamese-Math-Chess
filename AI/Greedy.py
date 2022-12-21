@@ -1,5 +1,5 @@
 import random
-import copy
+
 from AI.AI import AI
 
 
@@ -11,9 +11,9 @@ class Greedy(AI):
         best_move = None
         random.shuffle(valid_moves)
         for player_move in valid_moves:
-            new_gs = copy.deepcopy(gs)
-            new_gs.makeMove(player_move)
+            gs.makeMove(player_move)
             score = turn_multiplier * self.scoreMaterial(gs.board)
+            gs.undoMove()
             if score > max_score:
                 max_score = score
                 best_move = player_move
