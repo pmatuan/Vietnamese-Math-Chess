@@ -1,3 +1,6 @@
+import random
+
+
 class AI:
     def __init__(self):
         self.CHECKMATE = 45
@@ -20,3 +23,6 @@ class AI:
                     else:
                         score -= int(square[1])
         return score
+    
+    def findRandomMove(self, valid_moves):
+        return random.choice(valid_moves)
