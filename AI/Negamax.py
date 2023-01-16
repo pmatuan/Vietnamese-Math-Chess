@@ -13,18 +13,34 @@ class Negamax(AI):
 
     def findMoveNegaMaxAlphaBeta(self, gs, valid_moves, depth, alpha, beta, turn):
         if depth == 0:
-            return turn * self.scoreMaterial(gs.board)
-        max_score = -self.CHECKMATE
+            return self.quiescenceSearch(gs, alpha, beta, turn)
+        bestValue = -self.CHECKMATE
         for move in valid_moves:
             gs.makeMove(move)
-            next_moves = gs.getAllPossibleMoves()
+            next_moves= gs.getValidMoves()
             score = - self.findMoveNegaMaxAlphaBeta(gs, next_moves, depth - 1, -beta, -alpha, -turn)
             gs.undoMove()
-            if score > max_score:
-                max_score = score
+            if score > bestValue:
+                bestValue = score
                 if depth == self.DEPTH:
                     self.next_move = move
-            alpha = max(alpha, max_score)
+            alpha = max(alpha, bestValue)
             if alpha >= beta:
                 break
-        return max_score
+        return bestValue
+
+    def quiescenceSearch(self, gs, alpha, beta, turn):
+        best_score = turn * self.scoreMaterial(gs.board)
+        alpha = max(alpha, best_score)
+        if alpha >= beta:
+            return best_score
+        captures = gs.getAllPossibleAttacks()
+        for move in captures:
+            gs.makeMove(move)
+            score = -self.quiescenceSearch(gs, -beta, -alpha, -turn)
+            gs.undoMove()
+            best_score = max(best_score, score)
+            alpha = max(alpha, best_score)
+            if alpha >= beta:
+                break
+        return alpha

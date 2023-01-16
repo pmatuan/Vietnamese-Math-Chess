@@ -23,6 +23,9 @@ class GameState:
             ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9"]
         ]
         self.red_to_move = True
+        self.checkmate = False
+        self.zeroRed = (9, 4)
+        self.zeroBlue = (1, 4)
         self.move_log = []
 
     def check(self):
@@ -47,6 +50,42 @@ class GameState:
             self.board[move.end_row][move.end_col] = move.piece_captured
             self.red_to_move = not self.red_to_move  # switch turn back
 
+    def getValidMoves(self):
+        moves = self.getAllPossibleMoves()
+        captures = self.getAllPossibleAttacks()
+        all = moves + captures
+        # for i in range(len(all) - 1, -1, -1):  # when removing from a list go backwards through that list
+        #     self.makeMove(all[i])
+        #     self.red_to_move = not self.red_to_move
+        #     if self.inCheck():
+        #         all.remove(all[i])
+        #     self.red_to_move = not self.red_to_move
+        #     self.undoMove()
+        return all
+
+    '''
+    Determine if the current player is in check
+    '''
+
+    def inCheck(self):
+        if self.red_to_move:
+            return self.squareUnderAttack(self.zeroRed[0], self.zeroRed[1])
+        else:
+            return self.squareUnderAttack(self.zeroBlue[0], self.zeroBlue[1])
+
+    '''
+    Determine if the enemy can attack the square r, c
+    '''
+
+    def squareUnderAttack(self, r, c):
+        self.red_to_move = not self.red_to_move
+        oppMoves = self.getAllPossibleAttacks()
+        self.red_to_move = not self.red_to_move  # switch the turn back
+        for move in oppMoves:
+            if move.end_row == r and move.end_col == c:  # square is under attack
+                return True
+        return False
+
     '''
     All moves without considering checks
     '''
@@ -60,13 +99,14 @@ class GameState:
                     piece = int(self.board[r][c][1])
                     if piece == 0:
                         continue
-                    self.getPieceMove(r, c, piece, moves)
-                    self.getAttackMove(r, c, piece_color, piece, moves)
+                    moves += self.getPieceMove(r, c, piece)
         return moves
 
-    def getPieceMove(self, r, c, piece, moves):
+    def getPieceMove(self, r, c, piece):
+        moves = []
         directions = ((-1, -1), (-1, 1), (1, -1), (1, 1), (-1, 0), (0, -1), (1, 0), (0, 1))
         self.getMoveWithDirection(r, c, piece, directions, moves)
+        return moves
 
     def getMoveWithDirection(self, r, c, piece, direction, moves):
         for d in direction:
@@ -82,7 +122,20 @@ class GameState:
                 else:
                     break
 
-    def getAttackMove(self, r, c, piece_color, piece, moves):
+    def getAllPossibleAttacks(self):
+        captures = []
+        for r in range(len(self.board)):
+            for c in range(len(self.board[r])):
+                piece_color = self.board[r][c][0]
+                if (piece_color == 'r' and self.red_to_move) or (piece_color == 'b' and not self.red_to_move):
+                    piece = int(self.board[r][c][1])
+                    if piece == 0:
+                        continue
+                    captures += self.getAttackMove(r, c, piece_color, piece)
+        return captures
+
+    def getAttackMove(self, r, c, piece_color, piece):
+        captures = []
         directions = ((-1, -1), (-1, 1), (1, -1), (1, 1), (-1, 0), (0, -1), (1, 0), (0, 1))
         for (i, j) in directions:
             if 0 <= r + i < 11 and 0 <= c + j < 9:
@@ -97,9 +150,10 @@ class GameState:
                     attack_division = (piece // team_piece)
                     attack_remainder = piece % team_piece
                     attack = [attack_add, attack_sub, attack_multi, attack_division, attack_remainder]
-                    self.getAttackWithDirection((r, c), attack, (i, j), moves)
+                    self.getAttackWithDirection((r, c), attack, (i, j), captures)
+        return captures
 
-    def getAttackWithDirection(self, piece_state, attack, direction, moves):
+    def getAttackWithDirection(self, piece_state, attack, direction, captures):
         enemy_color = "b" if self.red_to_move else "r"
         r, c = piece_state
         i, j = direction
@@ -128,4 +182,4 @@ class GameState:
                 if 0 <= end_row < 11 and 0 <= end_col < 9:
                     end_piece = self.board[end_row][end_col]
                     if end_piece[0] == enemy_color:
-                        moves.append(Move(piece_state, (end_row, end_col), self.board))
+                        captures.append(Move(piece_state, (end_row, end_col), self.board))

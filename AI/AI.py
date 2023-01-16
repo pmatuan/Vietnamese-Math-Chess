@@ -22,6 +22,21 @@ class AI:
                         score -= self.CHECKMATE
                     else:
                         score -= int(square[1])
+        score += self.scoreZeroSafety(board)
+        return score
+
+    def scoreZeroSafety(self, board):
+        red_direction = ((-1, -1), (-1, 1), (-1, 0), (0, -1), (0, 1))
+        blue_direction = ((0, -1), (0, 1), (1, -1), (1, 0), (1, 1))
+        score = 0
+        for d in red_direction:
+            for i in range(1, 4, 1):
+                if board[d[0]*i][d[1]*i][0] == 'b':
+                    score -= 1
+        for d in blue_direction:
+            for i in range(1, 4, 1):
+                if board[d[0]*i][d[1]*i][0] == 'r':
+                    score += 1
         return score
     
     def findRandomMove(self, valid_moves):
