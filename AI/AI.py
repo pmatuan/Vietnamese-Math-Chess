@@ -8,9 +8,14 @@ class AI:
         self.DEPTH = 3
         self.next_move = None
 
-    def scoreMaterial(self, board):
+    def scoreMaterial(self, gs):
+        # if gs.checkmate:
+        #     if gs.red_to_move:
+        #         return -3 * self.CHECKMATE
+        #     else:
+        #         return 3 * self.CHECKMATE
         score = 0
-        for row in board:
+        for row in gs.board:
             for square in row:
                 if square[0] == "r":
                     if int(square[1]) == 0:
@@ -22,7 +27,7 @@ class AI:
                         score -= self.CHECKMATE
                     else:
                         score -= int(square[1])
-        score += self.scoreZeroSafety(board)
+        score += self.scoreZeroSafety(gs.board)
         return score
 
     def scoreZeroSafety(self, board):
