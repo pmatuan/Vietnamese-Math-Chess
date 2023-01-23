@@ -64,6 +64,16 @@ def scoreMaterial(gs):
     score_3 = 1000045 - score_2
     score_4 = 1000045 - score_1
     return score_3, score_4
+def CalTime(gs): #đóng gói time ra ngoài
+    time1 = 600
+    time2 = 600
+    if gs.red_to_move:
+        time1 -= 1/MAX_FPS
+    else:
+        time2 -= 1/MAX_FPS
+    if time1 < 0 or time2 < 0:
+        time1 = time2 = 600
+    return time1, time2
 
 
 
@@ -208,19 +218,16 @@ def main():
                         gs.undoMove()
                         gs.undoMove()
                         move_made = True
-            if not game_over:
-                current_time = pygame.time.get_ticks()
-                player_time = 1200 - (current_time - start_time) / 1000
-            if not game_over and gs.red_to_move:
-                player1_time -= 1/MAX_FPS
-                player1_timeint = int(player1_time)
-                player1_minutes = player1_timeint // 60
-                player1_minutes1 = player1_minutes // 10
-                player1_minutes2 = player1_minutes % 10
-                player1_second = player1_timeint % 60
-                player1_second1 = player1_second // 10
-                player1_second2 = player1_second % 10
-            player2_time = player_time - player1_time
+
+            player1_time = CalTime(gs)[0]
+            player1_timeint = int(player1_time)
+            player1_minutes = player1_timeint // 60
+            player1_minutes1 = player1_minutes // 10
+            player1_minutes2 = player1_minutes % 10
+            player1_second = player1_timeint % 60
+            player1_second1 = player1_second // 10
+            player1_second2 = player1_second % 10
+            player2_time = CalTime(gs)[1]
             player2_timeint = int(player2_time)
             player2_minutes = player2_timeint // 60
             player2_minutes1 = player2_minutes // 10

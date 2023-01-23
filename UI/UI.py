@@ -7,6 +7,7 @@ WIDTH_BOX = 400
 NUMBER_DEPTH = 16
 WIDTH_PER_BOX = WIDTH_BOX // NUMBER_DEPTH
 
+
 class SimpleScene:
     def __init__(self, text):
         self.background = pygame.Surface((WIDTH, HEIGHT))
@@ -22,8 +23,8 @@ class SimpleScene:
         textRect.center = (WIDTH // 2, HEIGHT // 3)
         screen.blit(text, textRect)
         play = pygame.transform.scale(pygame.image.load("UI/image/start.png"), (
-        pygame.image.load("UI/image/start.png").get_width() // 6,
-        pygame.image.load("UI/image/start.png").get_height() // 6))
+            pygame.image.load("UI/image/start.png").get_width() // 6,
+            pygame.image.load("UI/image/start.png").get_height() // 6))
         self.playRect = play.get_rect()
         self.playRect.center = (WIDTH // 2, HEIGHT // 1.5)
         screen.blit(play, self.playRect)
@@ -194,7 +195,7 @@ class ChooseDepth:
             pygame.image.load("UI/image/back.png").get_width() // 6,
             pygame.image.load("UI/image/back.png").get_height() // 6))
         self.playRect = self.play.get_rect()
-        self.playRect.center = (WIDTH // 2 - self.playRect.width -40 , HEIGHT // 1.12)
+        self.playRect.center = (WIDTH // 2 - self.playRect.width - 40, HEIGHT // 1.12)
         screen.blit(self.play, self.playRect)
 
         self.play_1 = pygame.transform.scale(pygame.image.load("UI/image/next.png"), (
@@ -218,7 +219,6 @@ class ChooseDepth:
         self.rectimg_max.center = ((WIDTH + WIDTH_BOX) // 2, HEIGHT // 1.5)
         self.rectimg_min.center = ((WIDTH - WIDTH_BOX) // 2, HEIGHT // 1.5)
         self.rectimg.center = ((WIDTH - WIDTH_BOX) // 2, HEIGHT // 1.5)
-
 
         pygame.display.flip()
 
@@ -282,7 +282,8 @@ class ChooseDepth:
                                                        HEIGHT_BOX // 3)
                             pygame.draw.rect(self.screen, pygame.Color(120, 200, 112), self.rectbar)
                             pygame.draw.rect(self.screen, pygame.Color(120, 8, 8), self.rect, 5)
-                            self.sau = str(((self.rectimg.x - (WIDTH - WIDTH_BOX) // 2)+self.rectimg.width//2)//WIDTH_PER_BOX)
+                            self.sau = str(((self.rectimg.x - (
+                                    WIDTH - WIDTH_BOX) // 2) + self.rectimg.width // 2) // WIDTH_PER_BOX)
                             self.screen.blit(self.img, self.rectimg)
 
                         self.text_2 = font.render(str(self.sau), True, pygame.Color(144, 8, 8))
@@ -293,5 +294,6 @@ class ChooseDepth:
                         self.screen.blit(self.play, self.playRect)
                         pygame.display.flip()
         return True
+
     def element(self, events):
         return int(self.sau)
