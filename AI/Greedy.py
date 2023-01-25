@@ -11,7 +11,7 @@ class Greedy(AI):
         random.shuffle(valid_moves)
         for player_move in valid_moves:
             gs.makeMove(player_move)
-            score = turn_multiplier * self.scoreMaterial(gs.board)
+            score = turn_multiplier * self.scoreMaterial(gs)
             gs.undoMove()
             if score > max_score:
                 max_score = score

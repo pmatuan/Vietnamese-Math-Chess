@@ -12,7 +12,7 @@ class Minimax(AI):
 
     def findMoveMinimax(self, gs, valid_moves, depth, red_to_move):
         if depth == 0:
-            return self.scoreMaterial(gs.board)
+            return self.scoreMaterial(gs)
         if red_to_move:
             max_score = -self.CHECKMATE
             for move in valid_moves:

@@ -2,10 +2,10 @@ import random
 
 
 class AI:
-    def __init__(self, depth):
+    def __init__(self):
         self.CHECKMATE = 45
         self.STALEMATE = 0
-        self.DEPTH = depth
+        self.DEPTH = 2
         self.next_move = None
 
     def scoreMaterial(self, gs):

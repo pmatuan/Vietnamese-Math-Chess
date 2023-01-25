@@ -51,7 +51,7 @@ def main():
     game_over = False
     player_one = True  # if a human playing red, then this will be True. If an AI is playing, then false
     player_two = False  # same as above but for blue
-    AI = Negamax(1) # Greedy / Minimax / Negamax
+    AI = Minimax() # Greedy / Minimax / Negamax
     while running:
         game_over = gs.check()
         if game_over:
