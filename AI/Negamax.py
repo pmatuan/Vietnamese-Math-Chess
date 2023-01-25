@@ -28,3 +28,19 @@ class Negamax(AI):
             if alpha >= beta:
                 break
         return max_score
+
+    def quiescenceSearch(self, gs, alpha, beta, turn):
+        best_score = turn * self.scoreMaterial(gs)
+        alpha = max(alpha, best_score)
+        if alpha >= beta:
+            return best_score
+        captures = gs.getAllPossibleAttacks()
+        for move in captures:
+            gs.makeMove(move)
+            score = -self.quiescenceSearch(gs, -beta, -alpha, -turn)
+            gs.undoMove()
+            best_score = max(best_score, score)
+            alpha = max(alpha, best_score)
+            if alpha >= beta:
+                break
+        return alpha
