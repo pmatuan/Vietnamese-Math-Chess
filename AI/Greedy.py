@@ -5,7 +5,7 @@ from AI.AI import AI
 
 class Greedy(AI):
 
-    def findMove(self, gs, valid_moves):
+    def findMove(self, gs, valid_moves, depth):
         turn_multiplier = 1 if gs.red_to_move else -1
         max_score = -self.CHECKMATE
         random.shuffle(valid_moves)
