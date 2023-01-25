@@ -2,10 +2,10 @@ import random
 
 
 class AI:
-    def __init__(self):
+    def __init__(self, depth):
         self.CHECKMATE = 45
         self.STALEMATE = 0
-        self.DEPTH = 3
+        self.DEPTH = depth
         self.next_move = None
 
     def scoreMaterial(self, gs):
@@ -31,11 +31,11 @@ class AI:
         score = 0
         for d in red_direction:
             for i in range(1, 4, 1):
-                if board[d[0]*i][d[1]*i][0] == 'b':
+                if board[d[0] * i][d[1] * i][0] == 'b':
                     score -= 1
         for d in blue_direction:
             for i in range(1, 4, 1):
-                if board[d[0]*i][d[1]*i][0] == 'r':
+                if board[d[0] * i][d[1] * i][0] == 'r':
                     score += 1
         return score
 
@@ -54,6 +54,6 @@ class AI:
             if alpha >= beta:
                 break
         return alpha
-    
+
     def findRandomMove(self, valid_moves):
         return random.choice(valid_moves)
