@@ -225,6 +225,7 @@ class ChooseDepth:
     def update(self, events):
         self.offset_x = 0
         self.sau = 0
+        self.check = False
         run = True
         while run:
             for event in pygame.event.get():
