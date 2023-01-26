@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e39496f-9e91-4f46-9947-d6129a8577c9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Vietnamese-Math-Chess.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Vietnamese-Math-Chess.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="5e39496f-9e91-4f46-9947-d6129a8577c9" name="Changes" comment="UI">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +45,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/dongt/PycharmProjects/Vietnamese-Math-Chess",
+    "last_opened_file_path": "C:/Users/dongt/PycharmProjects/Vietnamese-Math-Chess/UI",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -57,6 +55,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\dongt\PycharmProjects\Vietnamese-Math-Chess\UI" />
       <recent name="$PROJECT_DIR$/AI" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -112,6 +111,14 @@
       <workItem from="1674653842550" duration="136000" />
       <workItem from="1674655536501" duration="765000" />
     </task>
+    <task id="LOCAL-00001" summary="UI">
+      <created>1674746450204</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1674746450204</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,5 +184,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="UI" />
+    <option name="LAST_COMMIT_MESSAGE" value="UI" />
   </component>
 </project>
