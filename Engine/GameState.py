@@ -185,32 +185,4 @@ class GameState:
                     end_piece = self.board[end_row][end_col]
                     if end_piece[0] == enemy_color:
                         captures.append(Move(piece_state, (end_row, end_col), self.board))
-    def CalTime(self, screen):
-        global player1_time
-        global player2_time
-        if self.red_to_move:
-            player1_time -= 1/15
-            player2_time -= 0
-        if not self.red_to_move:
-            player2_time -= 1/15
-            player1_time -= 0
-        font = pygame.font.Font(None, 36)
-        sub_screen1 = pygame.Surface((256, 176))
-        sub_screen1.fill((255, 0, 0))
-        font = pygame.font.Font(None, 36)
-        text = font.render("Red time: " + str(int(player1_time)), True, (255, 255, 255))
-        text_rect = text.get_rect()
-        text_rect.centerx = sub_screen1.get_rect().centerx
-        text_rect.centery = sub_screen1.get_rect().centery
-        sub_screen1.blit(text, text_rect)
-        screen.blit(sub_screen1, (576, 352))
-        sub_screen4 = pygame.Surface((256, 176))
-        sub_screen4.fill((0, 0, 255))
-        font = pygame.font.Font(None, 36)
-        text = font.render("Blue time: " + str(int(player2_time)), True, (255, 255, 255))
-        text_rect = text.get_rect()
-        text_rect.centerx = sub_screen4.get_rect().centerx
-        text_rect.centery = sub_screen4.get_rect().centery
-        sub_screen4.blit(text, text_rect)
-        screen.blit(sub_screen4, (576, 176))
-        pygame.display.flip()
+

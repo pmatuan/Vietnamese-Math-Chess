@@ -5,6 +5,7 @@ Displaying current GameStatus object.
 """
 
 import pygame
+import asyncio
 import time
 from Engine.GameState import GameState
 from Engine.Move import Move
@@ -13,6 +14,7 @@ from AI.Negascout import Negascout
 from AI.Minimax import Minimax
 from AI.Greedy import Greedy
 from UI.UI import *
+
 
 WIDTH = 832
 HEIGHT = 704
@@ -71,8 +73,37 @@ def scoreMaterial(gs):
 player1_time = 600
 player2_time = 600
 
-
-def main():
+async def CalTime(gs, screen):
+    global player1_time
+    global player2_time
+    if gs.red_to_move:
+        player1_time -= 1/25
+        player2_time -= 0
+    if not gs.red_to_move:
+        player2_time -= 1/25
+        player1_time -= 0
+    font = pygame.font.Font(None, 36)
+    sub_screen1 = pygame.Surface((256, 176))
+    sub_screen1.fill((255, 0, 0))
+    font = pygame.font.Font(None, 36)
+    text = font.render("Red time: " + str(player1_time), True, (255, 255, 255))
+    text_rect = text.get_rect()
+    text_rect.centerx = sub_screen1.get_rect().centerx
+    text_rect.centery = sub_screen1.get_rect().centery
+    sub_screen1.blit(text, text_rect)
+    screen.blit(sub_screen1, (576, 352))
+    sub_screen4 = pygame.Surface((256, 176))
+    sub_screen4.fill((0, 0, 255))
+    font = pygame.font.Font(None, 36)
+    text = font.render("Blue time: " + str(player2_time), True, (255, 255, 255))
+    text_rect = text.get_rect()
+    text_rect.centerx = sub_screen4.get_rect().centerx
+    text_rect.centery = sub_screen4.get_rect().centery
+    sub_screen4.blit(text, text_rect)
+    screen.blit(sub_screen4, (576, 176))
+    pygame.display.flip()
+    return {"message": "Time calculated"}
+async def main():
     """
     The main driver for our code.
     This will handle user input and updating the graphics.
@@ -88,21 +119,13 @@ def main():
     sq_selected = ()  # no square is selected, keep track of the last click of the user (tuple: (row, col))
     player_clicks = []  # keep track of the player clicks
     game_over = False
-    # AI = Negascout()  # Greedy / Minimax / Negamax / Negascout
-    player1_time = 600
-    player2_time = 600
-    player1_timeint = 600
-    player2_timeint = 600
-    red_score = 0
-    blue_score = 0
     AI_BLUE = None
     DEPTH_AI_BLUE = None
     DEPTH_AI_RED = None
     AI_RED = None
-    red_score = 0
-    blue_score = 0
     end_UI = True
     scene = scenes['TITLE']
+    asyncio.create_task(CalTime(gs, screen))
     while running:
         if end_UI == True:
             screen = pygame.display.set_mode((640, 480))
@@ -173,6 +196,7 @@ def main():
             pygame.display.flip()
         else:
             drawGameState(screen, gs, valid_moves, sq_selected)
+            await CalTime(gs, screen)
             game_over = gs.check()
             if game_over:
                 if gs.red_to_move:
@@ -220,19 +244,24 @@ def main():
             elif blue_score >= 15:
                 loser("Blue win", screen)
                 running = False
-            gs.CalTime(screen)
-
+            await CalTime(gs, screen)
             # AI move finder
             if not game_over and not human_turn and not gs.red_to_move:
                 ################################
-                AIMove = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)
+                if AI_BLUE == botai['Greedy']:
+                    AIMove = AI_BLUE.findMove(gs, valid_moves)
+                else:
+                    AIMove = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)
                 gs.makeMove(AIMove)
                 move_made = True
                 ################################
 
             elif not game_over and not human_turn and AI_RED and gs.red_to_move:
                 ################################
-                AIMove = AI_RED.findMove(gs, valid_moves, DEPTH_AI_BLUE)
+                if AI_RED == botai['Greedy']:
+                    AIMove = AI_RED.findMove(gs, valid_moves)
+                else:
+                    AIMove = AI_RED.findMove(gs, valid_moves, DEPTH_AI_BLUE)
                 gs.makeMove(AIMove)
                 move_made = True
                 ################################
@@ -267,6 +296,8 @@ def main():
             screen.blit(sub_screen2, (576, 0))
             # Update the display
             pygame.display.flip()
+
+
 
 
 '''
@@ -332,6 +363,5 @@ def loser(message, screen):
     pygame.display.update()
     time.sleep(5)
 
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    asyncio.run(main())
