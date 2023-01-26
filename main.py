@@ -177,9 +177,15 @@ async def main():
                         DEPTH_AI_BLUE = True
 
                     if isinstance(ele, int) and DEPTH_AI_BLUE:
-                        DEPTH_AI_RED = ele
+                        if ele >= 0:
+                            DEPTH_AI_RED = ele
+                        else:
+                            AI_RED = None
                     if isinstance(ele, int) and not DEPTH_AI_BLUE:
-                        DEPTH_AI_BLUE = ele
+                        if ele >= 0:
+                            DEPTH_AI_BLUE = ele
+                        else:
+                            AI_BLUE = None
 
                     if not player_one and not AI_RED and (DEPTH_AI_BLUE or DEPTH_AI_BLUE == 0):
                         result = 'CHOOSE_BOT'
