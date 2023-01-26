@@ -237,7 +237,9 @@ class ChooseDepth:
                             mouse_x, mouse_y = event.pos
                             self.offset_x = self.rectimg.x - mouse_x
                     if self.playRect.collidepoint(event.pos):
+                        self.check = True
                         return ('CHOOSE_BOT')
+
                     if self.playRect_1.collidepoint(event.pos):
                         run = False
                 elif event.type == pygame.MOUSEBUTTONUP:
