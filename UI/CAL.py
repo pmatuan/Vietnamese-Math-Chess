@@ -54,7 +54,7 @@ class CACULATION:
         title_5 = str(self.cal_num_2) + ' * ' + str(self.cal_num_1) + ' = ' + str((self.cal_num_2 + self.cal_num_1)%10)
         if self.cal_num_1 == 0:
             title_6 = str(self.cal_num_2) + ' / ' + str(self.cal_num_1) + ' = NaN'
-            title_7 = str(self.cal_num_2) + ' / ' + str(self.cal_num_1) + ' = NaN'
+            title_7 = str(self.cal_num_2) + ' % ' + str(self.cal_num_1) + ' = NaN'
         else:
             title_6 = str(self.cal_num_2) + ' / ' + str(self.cal_num_1) + ' = ' + str(self.cal_num_2 // self.cal_num_1)
             title_7 = str(self.cal_num_2) + ' % ' + str(self.cal_num_1) + ' = ' + str(self.cal_num_2 % self.cal_num_1)
