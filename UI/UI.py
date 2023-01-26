@@ -296,4 +296,6 @@ class ChooseDepth:
         return True
 
     def element(self, events):
+        if self.check:
+            return -1
         return int(self.sau)

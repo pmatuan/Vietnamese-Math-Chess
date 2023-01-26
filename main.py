@@ -14,6 +14,7 @@ from AI.Negascout import Negascout
 from AI.Minimax import Minimax
 from AI.Greedy import Greedy
 from UI.UI import *
+from UI.CAL import *
 
 
 WIDTH = 832
@@ -126,6 +127,7 @@ async def main():
     end_UI = True
     scene = scenes['TITLE']
     asyncio.create_task(CalTime(gs, screen))
+    CAL = CACULATION()
     while running:
         if end_UI == True:
             screen = pygame.display.set_mode((640, 480))
@@ -177,9 +179,15 @@ async def main():
                         DEPTH_AI_BLUE = True
 
                     if isinstance(ele, int) and DEPTH_AI_BLUE:
-                        DEPTH_AI_RED = ele
+                        if ele >= 0:
+                            DEPTH_AI_RED = ele
+                        else:
+                            AI_RED = None
                     if isinstance(ele, int) and not DEPTH_AI_BLUE:
-                        DEPTH_AI_BLUE = ele
+                        if ele >= 0:
+                            DEPTH_AI_BLUE = ele
+                        else:
+                            AI_BLUE = None
 
                     if not player_one and not AI_RED and (DEPTH_AI_BLUE or DEPTH_AI_BLUE == 0):
                         result = 'CHOOSE_BOT'
@@ -270,7 +278,7 @@ async def main():
                 move_made = False
             drawGameState(screen, gs, valid_moves, sq_selected)
             clock.tick(MAX_FPS)
-            pygame.display.flip()
+
             sub_screen3 = pygame.Surface((256, 176))
             sub_screen3.fill((255, 0, 0))
             # Write some text on the sub-screen
@@ -282,7 +290,7 @@ async def main():
             sub_screen3.blit(text, text_rect)
             # Blit the sub-screen onto the main screen
             screen.blit(sub_screen3, (576, 528))
-
+            CAL.draw_caltable(scene,events,IMAGES)
             sub_screen2 = pygame.Surface((256, 176))
             sub_screen2.fill((0, 0, 255))
             # Write some text on the sub-screen
