@@ -102,7 +102,6 @@ async def CalTime(gs, screen):
     text_rect.centery = sub_screen4.get_rect().centery
     sub_screen4.blit(text, text_rect)
     screen.blit(sub_screen4, (576, 176))
-    pygame.display.flip()
     return {"message": "Time calculated"}
 async def main():
     """
@@ -214,12 +213,14 @@ async def main():
                     loser("Red win", screen)
                     running = False
             human_turn = (gs.red_to_move and player_one) or (not gs.red_to_move and player_two)
-            for event in pygame.event.get():
+            events = pygame.event.get()
+            for event in events:
                 if event.type == pygame.QUIT:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if not game_over and human_turn:
-                        location = pygame.mouse.get_pos()  # (x,y) location of mouse
+                    location = pygame.mouse.get_pos()
+                    if not game_over and human_turn and location[0] <= WIDTH-WIDTH_CAL:
+                          # (x,y) location of mouse
                         col = location[0] // SQ_SIZE
                         row = location[1] // SQ_SIZE
                         if sq_selected == (row, col):  # the user clicked the same square twice
@@ -290,7 +291,7 @@ async def main():
             sub_screen3.blit(text, text_rect)
             # Blit the sub-screen onto the main screen
             screen.blit(sub_screen3, (576, 528))
-            CAL.draw_caltable(scene,events,IMAGES)
+            CAL.draw_caltable(screen,events,IMAGES)
             sub_screen2 = pygame.Surface((256, 176))
             sub_screen2.fill((0, 0, 255))
             # Write some text on the sub-screen
