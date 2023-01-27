@@ -51,7 +51,7 @@ class CACULATION:
 
         title_3 = str(self.cal_num_2) + ' + ' + str(self.cal_num_1) + ' = ' + str((self.cal_num_2 + self.cal_num_1)%10)
         title_4 = str(self.cal_num_2) + ' - ' + str(self.cal_num_1) + ' = ' + str(self.cal_num_2 - self.cal_num_1)
-        title_5 = str(self.cal_num_2) + ' * ' + str(self.cal_num_1) + ' = ' + str((self.cal_num_2 + self.cal_num_1)%10)
+        title_5 = str(self.cal_num_2) + ' * ' + str(self.cal_num_1) + ' = ' + str((self.cal_num_2 * self.cal_num_1)%10)
         if self.cal_num_1 == 0:
             title_6 = str(self.cal_num_2) + ' / ' + str(self.cal_num_1) + ' = NaN'
             title_7 = str(self.cal_num_2) + ' % ' + str(self.cal_num_1) + ' = NaN'
@@ -122,7 +122,7 @@ class CACULATION:
             screen.blit(text_5, textRect_5)
 
             if self.cal_num_1 != 0:
-                if self.cal_num_2 / self.cal_num_1 > 0:
+                if self.cal_num_2 / self.cal_num_1 >= 1:
                     text_6 = font_1.render(title_6, True, pygame.Color(212, 88, 88))
                 else:
                     text_6 = font.render(title_6, True, pygame.Color(144, 8, 8))
