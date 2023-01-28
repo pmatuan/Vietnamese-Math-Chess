@@ -76,48 +76,40 @@ end_UI = 1
 player1_time = 600
 player2_time = 600
 gs = GameState()
-def CalTime(gs):
-    screen = pygame.display.set_mode((200, 400))
-    events = pygame.event.get()
+def CalTime(gs, screen):
     running = True
     global player1_time
     global player2_time
     now = datetime.datetime.now()
-    while running:
-        for event in events:
-            if event.type == pygame.QUIT:
-                running == False
-        global player1_time
-        global player2_time
-        now = datetime.datetime.now()
-        if gs.red_to_move:
-            player1_time = player1_time - (now - gs.last_move_time).total_seconds()
-            player2_time -= 0
-            gs.last_move_time = now
-        elif not gs.red_to_move:
-            player2_time = player2_time - (now - gs.last_move_time).total_seconds()
-            player1_time -= 0
-            gs.last_move_time = now
-        if player1_time < 0 or player2_time < 0:
-            running == False
-        sub_screen1 = pygame.Surface((200, 200))
-        sub_screen1.fill((255, 0, 0))
-        font = pygame.font.Font(None, 24)
-        text = font.render("Red time: " + str(player1_time), True, (255, 255, 255))
-        text_rect = text.get_rect()
-        text_rect.centerx = sub_screen1.get_rect().centerx
-        text_rect.centery = sub_screen1.get_rect().centery
-        sub_screen1.blit(text, text_rect)
-        screen.blit(sub_screen1, (0, 0))
-        sub_screen4 = pygame.Surface((200, 200))
-        sub_screen4.fill((0, 0, 255))
-        font = pygame.font.Font(None, 24)
-        text = font.render("Blue time: " + str(player2_time), True, (255, 255, 255))
-        text_rect = text.get_rect()
-        text_rect.centerx = sub_screen4.get_rect().centerx
-        text_rect.centery = sub_screen4.get_rect().centery
-        sub_screen4.blit(text, text_rect)
-        screen.blit(sub_screen4, (0, 200))
+    if gs.red_to_move:
+        player1_time = player1_time - (now - gs.last_move_time).total_seconds()
+        player2_time -= 0
+        gs.last_move_time = now
+    elif not gs.red_to_move:
+        player2_time = player2_time - (now - gs.last_move_time).total_seconds()
+        player1_time -= 0
+        gs.last_move_time = now
+    if player1_time < 0 or player2_time < 0:
+        running == False
+    sub_screen1 = pygame.Surface((256, 88))
+    sub_screen1.fill((255, 0, 0))
+    font = pygame.font.Font(None, 24)
+    text = font.render("Red time: " + str(player1_time), True, (255, 255, 255))
+    text_rect = text.get_rect()
+    text_rect.centerx = sub_screen1.get_rect().centerx
+    text_rect.centery = sub_screen1.get_rect().centery
+    sub_screen1.blit(text, text_rect)
+    screen.blit(sub_screen1, (576, 528))
+    sub_screen4 = pygame.Surface((256, 88))
+    sub_screen4.fill((0, 0, 255))
+    font = pygame.font.Font(None, 24)
+    text = font.render("Blue time: " + str(player2_time), True, (255, 255, 255))
+    text_rect = text.get_rect()
+    text_rect.centerx = sub_screen4.get_rect().centerx
+    text_rect.centery = sub_screen4.get_rect().centery
+    sub_screen4.blit(text, text_rect)
+    screen.blit(sub_screen4, (576, 88))
+    pygame.display.flip()
     return player1_time, player2_time
 
 
@@ -273,6 +265,8 @@ def main(gs):
             elif blue_score >= 15:
                 loser("Blue win", screen)
                 running = False
+            score_thread = threading.Thread(target=CalTime(gs, screen))
+            score_thread.start()
             # AI move finder
             if not game_over and not human_turn and not gs.red_to_move:
                 ################################
@@ -393,8 +387,4 @@ def loser(message, screen):
     time.sleep(5)
 
 if __name__ == '__main__':
-    gs = GameState()
-    t1 = threading.Thread(target=CalTime, args=(gs,))
-    t2 = threading.Thread(target=main, args=(gs,))
-    t1.start()
-    t2.start()
+    main(gs)
