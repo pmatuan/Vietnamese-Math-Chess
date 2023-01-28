@@ -1,5 +1,5 @@
 from Engine.Move import Move
-import pygame
+import datetime
 player1_time = 600
 player2_time = 600
 
@@ -29,6 +29,19 @@ class GameState:
         self.zeroRed = (9, 4)
         self.zeroBlue = (1, 4)
         self.move_log = []
+        self.last_move_time = datetime.datetime.now()
+
+    def getHash(self):
+        """
+        A hash function to encode the current state of the game board.
+        """
+        h = 0
+        for row in range(len(self.board)):
+            for col in range(len(self.board[row])):
+                piece = self.board[row][col]
+                if piece != "--":
+                    h = h + hash(piece) * (row + 1) * (col + 1)
+        return h
 
     def check(self):
         if self.board[1][4] != "b0" or self.board[9][4] != "r0":

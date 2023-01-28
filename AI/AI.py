@@ -7,6 +7,7 @@ class AI:
         self.STALEMATE = 0
         self.DEPTH = 3
         self.next_move = None
+        self.transposition_table = {}
 
     def scoreMaterial(self, gs):
         score = 0

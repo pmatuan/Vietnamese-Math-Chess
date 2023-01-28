@@ -5,8 +5,10 @@ Displaying current GameStatus object.
 """
 
 import pygame
-import asyncio
+import threading
+from multiprocessing import Process
 import time
+import datetime
 from Engine.GameState import GameState
 from Engine.Move import Move
 from AI.Negamax import Negamax
@@ -70,40 +72,56 @@ def scoreMaterial(gs):
     score_4 = 1000045 - score_1
     return score_3, score_4
 
-
+end_UI = 1
 player1_time = 600
 player2_time = 600
-
-async def CalTime(gs, screen):
+gs = GameState()
+def CalTime(gs):
+    screen = pygame.display.set_mode((200, 400))
+    events = pygame.event.get()
+    running = True
     global player1_time
     global player2_time
-    if gs.red_to_move:
-        player1_time -= 1/25
-        player2_time -= 0
-    if not gs.red_to_move:
-        player2_time -= 1/25
-        player1_time -= 0
-    font = pygame.font.Font(None, 36)
-    sub_screen1 = pygame.Surface((256, 176))
-    sub_screen1.fill((255, 0, 0))
-    font = pygame.font.Font(None, 36)
-    text = font.render("Red time: " + str(player1_time), True, (255, 255, 255))
-    text_rect = text.get_rect()
-    text_rect.centerx = sub_screen1.get_rect().centerx
-    text_rect.centery = sub_screen1.get_rect().centery
-    sub_screen1.blit(text, text_rect)
-    screen.blit(sub_screen1, (576, 352))
-    sub_screen4 = pygame.Surface((256, 176))
-    sub_screen4.fill((0, 0, 255))
-    font = pygame.font.Font(None, 36)
-    text = font.render("Blue time: " + str(player2_time), True, (255, 255, 255))
-    text_rect = text.get_rect()
-    text_rect.centerx = sub_screen4.get_rect().centerx
-    text_rect.centery = sub_screen4.get_rect().centery
-    sub_screen4.blit(text, text_rect)
-    screen.blit(sub_screen4, (576, 176))
-    return {"message": "Time calculated"}
-async def main():
+    now = datetime.datetime.now()
+    while running:
+        for event in events:
+            if event.type == pygame.QUIT:
+                running == False
+        global player1_time
+        global player2_time
+        now = datetime.datetime.now()
+        if gs.red_to_move:
+            player1_time = player1_time - (now - gs.last_move_time).total_seconds()
+            player2_time -= 0
+            gs.last_move_time = now
+        elif not gs.red_to_move:
+            player2_time = player2_time - (now - gs.last_move_time).total_seconds()
+            player1_time -= 0
+            gs.last_move_time = now
+        if player1_time < 0 or player2_time < 0:
+            running == False
+        sub_screen1 = pygame.Surface((200, 200))
+        sub_screen1.fill((255, 0, 0))
+        font = pygame.font.Font(None, 24)
+        text = font.render("Red time: " + str(player1_time), True, (255, 255, 255))
+        text_rect = text.get_rect()
+        text_rect.centerx = sub_screen1.get_rect().centerx
+        text_rect.centery = sub_screen1.get_rect().centery
+        sub_screen1.blit(text, text_rect)
+        screen.blit(sub_screen1, (0, 0))
+        sub_screen4 = pygame.Surface((200, 200))
+        sub_screen4.fill((0, 0, 255))
+        font = pygame.font.Font(None, 24)
+        text = font.render("Blue time: " + str(player2_time), True, (255, 255, 255))
+        text_rect = text.get_rect()
+        text_rect.centerx = sub_screen4.get_rect().centerx
+        text_rect.centery = sub_screen4.get_rect().centery
+        sub_screen4.blit(text, text_rect)
+        screen.blit(sub_screen4, (0, 200))
+    return player1_time, player2_time
+
+
+def main(gs):
     """
     The main driver for our code.
     This will handle user input and updating the graphics.
@@ -111,7 +129,6 @@ async def main():
     pygame.init()
     screen = pygame.display.set_mode((640, 480))
     clock = pygame.time.Clock()
-    gs = GameState()
     valid_moves = gs.getValidMoves()
     move_made = False  # flag variable for when a move is made
     loadImages()
@@ -123,12 +140,11 @@ async def main():
     DEPTH_AI_BLUE = None
     DEPTH_AI_RED = None
     AI_RED = None
-    end_UI = True
+    global end_UI
     scene = scenes['TITLE']
-    asyncio.create_task(CalTime(gs, screen))
     CAL = CACULATION()
     while running:
-        if end_UI == True:
+        if end_UI == 1:
             screen = pygame.display.set_mode((640, 480))
             events = pygame.event.get()
             for e in events:
@@ -141,7 +157,7 @@ async def main():
                     if ele == (True, True):
                         player_one = True  # if a human playing red, then this will be True. If an AI is playing, then false
                         player_two = True  # same as above but for blue
-                        end_UI = False
+                        end_UI = 0
                         result = 'CHOOSE_MODE'
                         screen = pygame.display.set_mode((WIDTH, HEIGHT))
                     if ele == (True, False):
@@ -195,7 +211,7 @@ async def main():
                             not player_one and not player_two and AI_BLUE and AI_RED and (
                             DEPTH_AI_BLUE or DEPTH_AI_BLUE == 0) and (DEPTH_AI_RED or DEPTH_AI_RED == 0)):
                         result = 'CHOOSE_MODE'
-                        end_UI = False
+                        end_UI = 0
                         screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
                 scene = scenes[result]
@@ -203,7 +219,6 @@ async def main():
             pygame.display.flip()
         else:
             drawGameState(screen, gs, valid_moves, sq_selected)
-            await CalTime(gs, screen)
             game_over = gs.check()
             if game_over:
                 if gs.red_to_move:
@@ -243,7 +258,12 @@ async def main():
                         gs.undoMove()
                         gs.undoMove()
                         move_made = True
-
+            if player1_time < 0:
+                loser("Blue win", screen)
+                running = False
+            if player2_time < 0:
+                loser("Red win", screen)
+                running = False
             # Calculate red score
             red_score = scoreMaterial(gs)[0]
             blue_score = scoreMaterial(gs)[1]
@@ -253,7 +273,6 @@ async def main():
             elif blue_score >= 15:
                 loser("Blue win", screen)
                 running = False
-            await CalTime(gs, screen)
             # AI move finder
             if not game_over and not human_turn and not gs.red_to_move:
                 ################################
@@ -280,22 +299,22 @@ async def main():
             drawGameState(screen, gs, valid_moves, sq_selected)
             clock.tick(MAX_FPS)
 
-            sub_screen3 = pygame.Surface((256, 176))
+            sub_screen3 = pygame.Surface((256, 88))
             sub_screen3.fill((255, 0, 0))
             # Write some text on the sub-screen
-            font = pygame.font.Font(None, 36)
+            font = pygame.font.Font(None, 24)
             text = font.render("Red score: " + str(red_score), True, (255, 255, 255))
             text_rect = text.get_rect()
             text_rect.centerx = sub_screen3.get_rect().centerx
             text_rect.centery = sub_screen3.get_rect().centery
             sub_screen3.blit(text, text_rect)
             # Blit the sub-screen onto the main screen
-            screen.blit(sub_screen3, (576, 528))
+            screen.blit(sub_screen3, (576, 616))
             CAL.draw_caltable(screen,events,IMAGES)
-            sub_screen2 = pygame.Surface((256, 176))
+            sub_screen2 = pygame.Surface((256, 88))
             sub_screen2.fill((0, 0, 255))
             # Write some text on the sub-screen
-            font = pygame.font.Font(None, 36)
+            font = pygame.font.Font(None, 24)
             text = font.render("Blue score: " + str(blue_score), True, (255, 255, 255))
             text_rect = text.get_rect()
             text_rect.centerx = sub_screen2.get_rect().centerx
@@ -305,6 +324,7 @@ async def main():
             screen.blit(sub_screen2, (576, 0))
             # Update the display
             pygame.display.flip()
+    return end_UI
 
 
 
@@ -372,5 +392,9 @@ def loser(message, screen):
     pygame.display.update()
     time.sleep(5)
 
-if __name__ == "__main__":
-    asyncio.run(main())
+if __name__ == '__main__':
+    gs = GameState()
+    t1 = threading.Thread(target=CalTime, args=(gs,))
+    t2 = threading.Thread(target=main, args=(gs,))
+    t1.start()
+    t2.start()
