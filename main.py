@@ -265,7 +265,7 @@ def main(gs):
             elif blue_score >= 15:
                 loser("Blue win", screen)
                 running = False
-            score_thread = threading.Thread(target=CalTime(gs, screen))
+            score_thread = threading.Thread(target=CalTime, args=(gs, screen))
             score_thread.start()
             score_thread.join()
             # AI move finder
