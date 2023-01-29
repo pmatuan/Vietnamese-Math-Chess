@@ -6,7 +6,6 @@ Displaying current GameStatus object.
 
 import pygame
 import threading
-from multiprocessing import Process
 import time
 import datetime
 from Engine.GameState import GameState
@@ -77,7 +76,6 @@ player1_time = 600
 player2_time = 600
 gs = GameState()
 def CalTime(gs, screen):
-    running = True
     global player1_time
     global player2_time
     now = datetime.datetime.now()
@@ -89,8 +87,6 @@ def CalTime(gs, screen):
         player2_time = player2_time - (now - gs.last_move_time).total_seconds()
         player1_time -= 0
         gs.last_move_time = now
-    if player1_time < 0 or player2_time < 0:
-        running == False
     sub_screen1 = pygame.Surface((256, 88))
     sub_screen1.fill((255, 0, 0))
     font = pygame.font.Font(None, 24)
