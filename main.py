@@ -268,7 +268,6 @@ def main(gs):
             score_thread = threading.Thread(target=CalTime(gs, screen))
             score_thread.start()
             score_thread.join()
-            time.sleep(1)
             # AI move finder
             if not game_over and not human_turn and not gs.red_to_move:
                 ################################
