@@ -1,7 +1,5 @@
 from Engine.Move import Move
-import pygame
-player1_time = 600
-player2_time = 600
+
 
 class GameState:
     def __init__(self):
@@ -55,42 +53,7 @@ class GameState:
     def getValidMoves(self):
         moves = self.getAllPossibleMoves()
         captures = self.getAllPossibleAttacks()
-        all = moves + captures
-        # for i in range(len(all) - 1, -1, -1):  # when removing from a list go backwards through that list
-        #     self.makeMove(all[i])
-        #     self.red_to_move = not self.red_to_move
-        #     if self.inCheck():
-        #         all.remove(all[i])
-        #     self.red_to_move = not self.red_to_move
-        #     self.undoMove()
-        return all
-
-    '''
-    Determine if the current player is in check
-    '''
-
-    def inCheck(self):
-        if self.red_to_move:
-            return self.squareUnderAttack(self.zeroRed[0], self.zeroRed[1])
-        else:
-            return self.squareUnderAttack(self.zeroBlue[0], self.zeroBlue[1])
-
-    '''
-    Determine if the enemy can attack the square r, c
-    '''
-
-    def squareUnderAttack(self, r, c):
-        self.red_to_move = not self.red_to_move
-        oppMoves = self.getAllPossibleAttacks()
-        self.red_to_move = not self.red_to_move  # switch the turn back
-        for move in oppMoves:
-            if move.end_row == r and move.end_col == c:  # square is under attack
-                return True
-        return False
-
-    '''
-    All moves without considering checks
-    '''
+        return moves + captures
 
     def getAllPossibleMoves(self):
         moves = []
@@ -185,4 +148,3 @@ class GameState:
                     end_piece = self.board[end_row][end_col]
                     if end_piece[0] == enemy_color:
                         captures.append(Move(piece_state, (end_row, end_col), self.board))
-

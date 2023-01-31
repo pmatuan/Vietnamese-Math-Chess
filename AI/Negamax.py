@@ -5,9 +5,8 @@ from AI.AI import AI
 
 class Negamax(AI):
 
-    def findMove(self, gs, valid_moves, depth):
+    def findMove(self, gs, valid_moves):
         random.shuffle(valid_moves)
-        self.DEPTH = depth
         self.findMoveNegaMaxAlphaBeta(gs, valid_moves, self.DEPTH, -self.CHECKMATE, self.CHECKMATE,
                                       1 if gs.red_to_move else -1)
         return self.next_move
@@ -31,17 +30,16 @@ class Negamax(AI):
         return max_score
 
     def quiescenceSearch(self, gs, alpha, beta, turn):
-        best_score = turn * self.scoreMaterial(gs)
-        alpha = max(alpha, best_score)
-        if alpha >= beta:
-            return best_score
+        score = turn * self.scoreMaterial(gs)
+        if score >= beta:
+            return beta
+        alpha = max(alpha, score)
         captures = gs.getAllPossibleAttacks()
         for move in captures:
             gs.makeMove(move)
             score = -self.quiescenceSearch(gs, -beta, -alpha, -turn)
             gs.undoMove()
-            best_score = max(best_score, score)
-            alpha = max(alpha, best_score)
-            if alpha >= beta:
-                break
+            if score >= beta:
+                return beta
+            alpha = max(alpha, score)
         return alpha
