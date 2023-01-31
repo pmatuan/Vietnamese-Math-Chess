@@ -2,7 +2,7 @@ import pygame
 class Highlight:
     def __init__(self, screen):
         self.screen = screen
-        self.font = pygame.font.SysFont(None, 10)
+        self.font = pygame.font.SysFont(None, 15)
         self.r = None
         self.c = None
         self.r_text = ""
