@@ -17,21 +17,15 @@ class Negascout(AI):
         if depth == 0:
             return self.quiescenceSearch(gs, alpha, beta, turn)
         for i, move in enumerate(valid_moves):
+            gs.makeMove(move)
+            next_moves = gs.getValidMoves()
             if i == 0:
-                gs.makeMove(move)
-                next_moves = gs.getValidMoves()
                 score = -self.findMoveNegascout(gs, next_moves, depth - 1, -beta, -alpha, -turn)
-                gs.undoMove()
             else:
-                gs.makeMove(move)
-                next_moves = gs.getValidMoves()
                 score = -self.findMoveNegascout(gs, next_moves, depth - 1, -alpha - 1, -alpha, -turn) # search with a null window
-                gs.undoMove()
                 if alpha < score < beta:
-                    gs.makeMove(move)
-                    next_moves = gs.getValidMoves()
                     score = -self.findMoveNegascout(gs, next_moves, depth - 1, -beta, -score, -turn) # if it failed high, do a full re-search
-                    gs.undoMove()
+            gs.undoMove()
             if alpha < score:
                 best_move = move
                 alpha = score
