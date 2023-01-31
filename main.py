@@ -3,7 +3,7 @@ Main driver file.
 Handling user input.
 Displaying current GameStatus object.
 """
-
+import textwrap
 import pygame
 import threading
 import time
@@ -16,13 +16,14 @@ from AI.Minimax import Minimax
 from AI.Greedy import Greedy
 from UI.UI import *
 from UI.CAL import *
+from UI.Highlight import *
 
 
-WIDTH = 832
-HEIGHT = 704
+WIDTH = 760
+HEIGHT = 736
 C_DIMENSION = 9
 R_DIMENSION = 11
-SQ_SIZE = HEIGHT // R_DIMENSION
+SQ_SIZE = 56
 MAX_FPS = 10
 IMAGES = {}
 
@@ -55,58 +56,37 @@ def loadImages():
 def scoreMaterial(gs):
     score_1 = 0
     score_2 = 0
+    material_1 = []
+    material_2 = []
     for row in gs.board:
         for square in row:
             if square[0] == "r":
                 if int(square[1]) == 0:
                     score_1 += 1000000
+                    material_1.append(0)
                 else:
                     score_1 += int(square[1])
+                    material_1.append(int(square[1]))
             elif square[0] == "b":
                 if int(square[1]) == 0:
                     score_2 += 1000000
+                    material_2.append(0)
                 else:
                     score_2 += int(square[1])
+                    material_2.append(int(square[1]))
     score_3 = 1000045 - score_2
     score_4 = 1000045 - score_1
-    return score_3, score_4
+    material_3 = set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).difference(set(material_1))
+    material_4 = set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).difference(set(material_2))
+    return score_3, score_4, material_3, material_4
 
 end_UI = 1
-player1_time = 600
-player2_time = 600
 gs = GameState()
-def CalTime(gs, screen):
-    global player1_time
-    global player2_time
-    now = datetime.datetime.now()
-    if gs.red_to_move:
-        player1_time = player1_time - (now - gs.last_move_time).total_seconds()
-        player2_time -= 0
-        gs.last_move_time = now
-    elif not gs.red_to_move:
-        player2_time = player2_time - (now - gs.last_move_time).total_seconds()
-        player1_time -= 0
-        gs.last_move_time = now
-    sub_screen1 = pygame.Surface((256, 88))
-    sub_screen1.fill((255, 0, 0))
-    font = pygame.font.Font(None, 24)
-    text = font.render("Red time: " + str(player1_time), True, (255, 255, 255))
-    text_rect = text.get_rect()
-    text_rect.centerx = sub_screen1.get_rect().centerx
-    text_rect.centery = sub_screen1.get_rect().centery
-    sub_screen1.blit(text, text_rect)
-    screen.blit(sub_screen1, (576, 528))
-    sub_screen4 = pygame.Surface((256, 88))
-    sub_screen4.fill((0, 0, 255))
-    font = pygame.font.Font(None, 24)
-    text = font.render("Blue time: " + str(player2_time), True, (255, 255, 255))
-    text_rect = text.get_rect()
-    text_rect.centerx = sub_screen4.get_rect().centerx
-    text_rect.centery = sub_screen4.get_rect().centery
-    sub_screen4.blit(text, text_rect)
-    screen.blit(sub_screen4, (576, 88))
-    pygame.display.flip()
-    return player1_time, player2_time
+
+
+
+
+
 
 
 def main(gs):
@@ -120,6 +100,7 @@ def main(gs):
     valid_moves = gs.getValidMoves()
     move_made = False  # flag variable for when a move is made
     loadImages()
+    highlight_menu = Highlight(screen)
     running = True
     sq_selected = ()  # no square is selected, keep track of the last click of the user (tuple: (row, col))
     player_clicks = []  # keep track of the player clicks
@@ -246,12 +227,7 @@ def main(gs):
                         gs.undoMove()
                         gs.undoMove()
                         move_made = True
-            if player1_time < 0:
-                loser("Blue win", screen)
-                running = False
-            if player2_time < 0:
-                loser("Red win", screen)
-                running = False
+                highlight_menu.handle_events(event)
             # Calculate red score
             red_score = scoreMaterial(gs)[0]
             blue_score = scoreMaterial(gs)[1]
@@ -261,9 +237,6 @@ def main(gs):
             elif blue_score >= 15:
                 loser("Blue win", screen)
                 running = False
-            score_thread = threading.Thread(target=CalTime, args=(gs, screen))
-            score_thread.start()
-            score_thread.join()
             # AI move finder
             if not game_over and not human_turn and not gs.red_to_move:
                 ################################
@@ -289,8 +262,9 @@ def main(gs):
                 move_made = False
             drawGameState(screen, gs, valid_moves, sq_selected)
             clock.tick(MAX_FPS)
-
-            sub_screen3 = pygame.Surface((256, 88))
+            highlight_menu.render()
+            highlight_menu.update()
+            sub_screen3 = pygame.Surface((256, 77))
             sub_screen3.fill((255, 0, 0))
             # Write some text on the sub-screen
             font = pygame.font.Font(None, 24)
@@ -300,9 +274,9 @@ def main(gs):
             text_rect.centery = sub_screen3.get_rect().centery
             sub_screen3.blit(text, text_rect)
             # Blit the sub-screen onto the main screen
-            screen.blit(sub_screen3, (576, 616))
+            screen.blit(sub_screen3, (504, 539))
             CAL.draw_caltable(screen,events,IMAGES)
-            sub_screen2 = pygame.Surface((256, 88))
+            sub_screen2 = pygame.Surface((256, 77))
             sub_screen2.fill((0, 0, 255))
             # Write some text on the sub-screen
             font = pygame.font.Font(None, 24)
@@ -312,12 +286,45 @@ def main(gs):
             text_rect.centery = sub_screen2.get_rect().centery
             sub_screen2.blit(text, text_rect)
             # Blit the sub-screen onto the main screen
-            screen.blit(sub_screen2, (576, 0))
+            screen.blit(sub_screen2, (504, 0))
             # Update the display
             pygame.display.flip()
-    return end_UI
+            redlostmaterial = scoreMaterial(gs)[2]
+            bluelostmaterial = scoreMaterial(gs)[3]
+            sub_screen1 = pygame.Surface((256, 77))
+            sub_screen1.fill((255, 0, 0))
+            font = pygame.font.Font(None, 24)
+            text = font.render("Red lost material:" + str(redlostmaterial), True, (255, 255, 255))
+            text_rect = text.get_rect()
+            text_rect.centerx = sub_screen1.get_rect().centerx
+            text_rect.centery = sub_screen1.get_rect().centery
+            sub_screen1.blit(text, text_rect)
+            screen.blit(sub_screen1, (504, 462))
+            sub_screen4 = pygame.Surface((256, 77))
+            sub_screen4.fill((0, 0, 255))
+            font = pygame.font.Font(None, 24)
+            text = font.render("Blue lost material:" + str(bluelostmaterial), True, (255, 255, 255))
+            text_rect = text.get_rect()
+            text_rect.centerx = sub_screen4.get_rect().centerx
+            text_rect.centery = sub_screen4.get_rect().centery
+            sub_screen4.blit(text, text_rect)
+            screen.blit(sub_screen4, (504, 77))
+            pygame.display.flip()
+            import textwrap
 
+            sub_screen5 = pygame.Surface((504, 120))
+            sub_screen5.fill((255, 255, 255))
+            font = pygame.font.Font(None, 16)
+            text_lines = textwrap.wrap(str(gs.move), width=100)  # wrap the text with width of 50 pixels
 
+            y_offset = 0
+            for line in text_lines:
+                text = font.render(line, True, (0, 0, 0))
+                sub_screen5.blit(text, (0, y_offset))
+                y_offset += font.get_height()
+
+            screen.blit(sub_screen5, (0, 616))
+            pygame.display.flip()
 
 
 '''

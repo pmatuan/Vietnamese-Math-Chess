@@ -1,8 +1,8 @@
 
 import pygame
 
-WIDTH = 832
-HEIGHT = 704
+WIDTH = 760
+HEIGHT = 616
 WIDTH_CAL = 256
 HEIGHT_CAL = 256
 
@@ -37,7 +37,7 @@ class CACULATION:
         screen.blit(text, textRect)
         screen.blit(text_1, textRect_1)
         screen.blit(text_2, textRect_2)
-        b_str_1 = 'r' + str( self.cal_num_1)
+        b_str_1 = 'r' + str(self.cal_num_1)
         b_str_2 = 'r' + str(self.cal_num_2)
         img1 = IMAGES[b_str_1]
         img2 = IMAGES[b_str_2]
@@ -51,7 +51,7 @@ class CACULATION:
 
         title_3 = str(self.cal_num_2) + ' + ' + str(self.cal_num_1) + ' = ' + str((self.cal_num_2 + self.cal_num_1)%10)
         title_4 = str(self.cal_num_2) + ' - ' + str(self.cal_num_1) + ' = ' + str(self.cal_num_2 - self.cal_num_1)
-        title_5 = str(self.cal_num_2) + ' * ' + str(self.cal_num_1) + ' = ' + str((self.cal_num_2 + self.cal_num_1)%10)
+        title_5 = str(self.cal_num_2) + ' * ' + str(self.cal_num_1) + ' = ' + str((self.cal_num_2 * self.cal_num_1)%10)
         if self.cal_num_1 == 0:
             title_6 = str(self.cal_num_2) + ' / ' + str(self.cal_num_1) + ' = NaN'
             title_7 = str(self.cal_num_2) + ' % ' + str(self.cal_num_1) + ' = NaN'
@@ -102,7 +102,7 @@ class CACULATION:
             else:
                 text_3 = font.render(title_3, True, pygame.Color(144, 8, 8))
             textRect_3 = text_3.get_rect()
-            textRect_3.midtop = (WIDTH - WIDTH_CAL // 2, (HEIGHT - HEIGHT_CAL) // 2 + 130)
+            textRect_3.midtop = (WIDTH - WIDTH_CAL // 2, (HEIGHT - HEIGHT_CAL) // 2 + 70)
             screen.blit(text_3, textRect_3)
 
             if self.cal_num_2 - self.cal_num_1 > 0:

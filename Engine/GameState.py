@@ -29,7 +29,8 @@ class GameState:
         self.zeroRed = (9, 4)
         self.zeroBlue = (1, 4)
         self.move_log = []
-        self.last_move_time = datetime.datetime.now()
+        self.move = []
+
 
     def getHash(self):
         """
@@ -53,6 +54,8 @@ class GameState:
         self.board[move.end_row][move.end_col] = move.piece_moved
         self.move_log.append(move)  # log the move so we can undo it later
         self.red_to_move = not self.red_to_move  # swap player
+        self.move.append(str(move.piece_moved) + 'move to' + str(move.end_row) + 'x' + str(move.end_col))
+
 
     '''
     Undo the last move made
@@ -198,4 +201,7 @@ class GameState:
                     end_piece = self.board[end_row][end_col]
                     if end_piece[0] == enemy_color:
                         captures.append(Move(piece_state, (end_row, end_col), self.board))
+                        return str(end_row) + str(end_col)
+        return None
+
 
