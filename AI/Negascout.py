@@ -5,7 +5,8 @@ from AI.AI import AI
 
 class Negascout(AI):
 
-    def findMove(self, gs, valid_moves):
+    def findMove(self, gs, valid_moves, depth):
+        self.DEPTH = depth
         random.shuffle(valid_moves)
         self.findMoveNegascout(gs, valid_moves, self.DEPTH, -self.CHECKMATE, self.CHECKMATE,
                                       1 if gs.red_to_move else -1)

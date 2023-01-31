@@ -5,7 +5,8 @@ from AI.AI import AI
 
 class Minimax(AI):
 
-    def findMove(self, gs, valid_moves):
+    def findMove(self, gs, valid_moves, depth):
+        self.DEPTH = depth
         random.shuffle(valid_moves)
         alpha = -self.CHECKMATE
         beta = self.CHECKMATE

@@ -5,23 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e39496f-9e91-4f46-9947-d6129a8577c9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Vietnamese-Math-Chess.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Vietnamese-Math-Chess.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AI/AI.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/AI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AI/Minimax.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/Minimax.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AI/Negamax.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/Negamax.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AI/Negascout.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/Negascout.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engine/GameState.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engine/GameState.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/CAL.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/UI.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/font/iCielBCDDCHardwareRough-Compressed.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/image/back.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/image/bg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/image/money.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/image/next.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/image/start.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +104,7 @@
       <workItem from="1675147846658" duration="6000" />
       <workItem from="1675147881301" duration="3723000" />
       <workItem from="1675155866459" duration="506000" />
-      <workItem from="1675156717353" duration="8885000" />
+      <workItem from="1675156717353" duration="11570000" />
     </task>
     <servers />
   </component>
@@ -137,6 +124,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Vietnamese_Math_Chess_V3$main.coverage" NAME="main Coverage Results" MODIFIED="1674617550596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Vietnamese_Math_Chess$main.coverage" NAME="main Coverage Results" MODIFIED="1675168812180" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Vietnamese_Math_Chess$main.coverage" NAME="main Coverage Results" MODIFIED="1675171823872" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
