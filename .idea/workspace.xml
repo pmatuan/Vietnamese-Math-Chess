@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5e39496f-9e91-4f46-9947-d6129a8577c9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engine/GameState.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engine/GameState.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +39,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/pmat/Downloads/Vietnamese-Math-Chess-Math-Chess-4-noUI",
+    "last_opened_file_path": "/home/pmat/Downloads/Vietnamese-Math-Chess-threading",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -106,6 +107,8 @@
       <workItem from="1675183256761" duration="1515000" />
       <workItem from="1675216477105" duration="116000" />
       <workItem from="1675229894785" duration="12274000" />
+      <workItem from="1675243280013" duration="275000" />
+      <workItem from="1675243686561" duration="682000" />
     </task>
     <servers />
   </component>
@@ -125,6 +128,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Vietnamese_Math_Chess_V3$main.coverage" NAME="main Coverage Results" MODIFIED="1674617550596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Vietnamese_Math_Chess$main.coverage" NAME="main Coverage Results" MODIFIED="1675243034437" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Vietnamese_Math_Chess$main.coverage" NAME="main Coverage Results" MODIFIED="1675243508752" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

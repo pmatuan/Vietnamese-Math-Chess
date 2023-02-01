@@ -53,7 +53,7 @@ class GameState:
     def getValidMoves(self):
         moves = self.getAllPossibleMoves()
         captures = self.getAllPossibleAttacks()
-        return moves + captures
+        return captures + moves
 
     def getAllPossibleMoves(self):
         moves = []
