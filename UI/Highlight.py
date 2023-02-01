@@ -2,7 +2,7 @@ import pygame
 class Highlight:
     def __init__(self, screen):
         self.screen = screen
-        self.font = pygame.font.SysFont(None, 25)
+        self.font = pygame.font.SysFont(None, 15)
         self.r = None
         self.c = None
         self.r_text = ""
@@ -10,14 +10,14 @@ class Highlight:
 
     def render(self):
         # Display the prompt
-        r_prompt = self.font.render("Enter the value of r: ", True, (25, 0, 0))
-        c_prompt = self.font.render("Enter the value of c: ", True, (0, 0, 0))
+        r_prompt = self.font.render("Enter the value of r: ", True, (255, 255, 255))
+        c_prompt = self.font.render("Enter the value of c: ", True, (255, 255, 255))
         self.screen.blit(r_prompt, (600, 650))
         self.screen.blit(c_prompt, (600, 700))
 
         # Display the input boxes
-        r_input = self.font.render(self.r_text, True, (0, 0, 0))
-        c_input = self.font.render(self.c_text, True, (0, 0, 0))
+        r_input = self.font.render(self.r_text, True, (255, 255, 255))
+        c_input = self.font.render(self.c_text, True, (255, 255, 255))
         self.screen.blit(r_input, (700, 650))
         self.screen.blit(c_input, (700, 700))
 
