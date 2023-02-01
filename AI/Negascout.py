@@ -9,7 +9,7 @@ class Negascout(AI):
         self.DEPTH = depth
         random.shuffle(valid_moves)
         self.findMoveNegascout(gs, valid_moves, self.DEPTH, -self.CHECKMATE, self.CHECKMATE,
-                                      1 if gs.red_to_move else -1)
+                               1 if gs.red_to_move else -1)
         return self.next_move
 
     def findMoveNegascout(self, gs, valid_moves, depth, alpha, beta, turn):
@@ -22,15 +22,17 @@ class Negascout(AI):
             if i == 0:
                 score = -self.findMoveNegascout(gs, next_moves, depth - 1, -beta, -alpha, -turn)
             else:
-                score = -self.findMoveNegascout(gs, next_moves, depth - 1, -alpha - 1, -alpha, -turn) # search with a null window
+                score = -self.findMoveNegascout(gs, next_moves, depth - 1, -alpha - 1, -alpha,
+                                                -turn)  # search with a null window
                 if alpha < score < beta:
-                    score = -self.findMoveNegascout(gs, next_moves, depth - 1, -beta, -score, -turn) # if it failed high, do a full re-search
+                    score = -self.findMoveNegascout(gs, next_moves, depth - 1, -beta, -score,
+                                                    -turn)  # if it failed high, do a full re-search
             gs.undoMove()
             if alpha < score:
                 best_move = move
                 alpha = score
             if alpha >= beta:
-                break # cut-off
+                break  # cut-off
         if depth == self.DEPTH:
             self.next_move = best_move
         return alpha
@@ -53,5 +55,3 @@ class Negascout(AI):
             if score > alpha:
                 alpha = score
         return alpha
-
-
