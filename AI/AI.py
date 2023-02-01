@@ -4,9 +4,9 @@ import random
 class AI:
     def __init__(self):
         self.CHECKMATE = 45
-        self.STALEMATE = 0
         self.DEPTH = 3
         self.next_move = None
+        self.next_move1 = None
 
     def scoreMaterial(self, gs):
         score = 0

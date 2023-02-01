@@ -9,13 +9,22 @@ from AI.Greedy import Greedy
 from UI.UI import *
 from UI.cal import *
 
-WIDTH = 832
-HEIGHT = 832
+WIDTH = 1000
+HEIGHT = 760
 C_DIMENSION = 9
 R_DIMENSION = 11
-SQ_SIZE = 64
+SQ_SIZE = 56
 MAX_FPS = 10
 IMAGES = {}
+Red_Browse = 'None (Human or Greedy)'
+Blue_Browse = 'None (Human or Greedy)'
+Red_Node = 'None (Human or Greedy)'
+Blue_Node = 'None (Human or Greedy)'
+Red_AI_Ratio = 'None (Human or Greedy)'
+Blue_AI_Ratio = 'None (Human or Greedy)'
+Red_Counter = 'None (Human or Greedy)'
+Blue_Counter = 'None (Human or Greedy)'
+
 
 scenes = {
     'TITLE': SimpleScene('Cờ toán Việt Nam'),
@@ -52,6 +61,14 @@ def main():
     DEPTH_AI_RED = None
     AI_RED = None
     end_UI = True
+    global Red_Browse
+    global Blue_Browse
+    global Red_Node
+    global Blue_Node
+    global Red_AI_Ratio
+    global Blue_AI_Ratio
+    global Red_Counter
+    global Blue_Counter
     scene = scenes['TITLE']
     cal = Calculation()
     while running:
@@ -183,7 +200,11 @@ def main():
                 if AI_BLUE == bot_ai['Greedy']:
                     AIMove = AI_BLUE.findMove(gs, valid_moves)
                 else:
-                    AIMove = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)
+                    AIMove = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)[0]
+                    Blue_Browse = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)[1]
+                    Blue_Node = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)[2]
+                    Blue_Counter = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)[3]
+                    Blue_AI_Ratio = Blue_Browse/Blue_Node
                 gs.makeMove(AIMove)
                 move_made = True
                 ################################
@@ -193,7 +214,11 @@ def main():
                 if AI_RED == bot_ai['Greedy']:
                     AIMove = AI_RED.findMove(gs, valid_moves)
                 else:
-                    AIMove = AI_RED.findMove(gs, valid_moves, DEPTH_AI_BLUE)
+                    AIMove = AI_RED.findMove(gs, valid_moves, DEPTH_AI_RED)[0]
+                    Red_Browse = AI_RED.findMove(gs, valid_moves, DEPTH_AI_RED)[1]
+                    Red_Node = AI_RED.findMove(gs, valid_moves, DEPTH_AI_RED)[2]
+                    Red_Counter = AI_RED.findMove(gs, valid_moves, DEPTH_AI_RED)[3]
+                    Red_AI_Ratio = Red_Browse/Red_Node
                 gs.makeMove(AIMove)
                 move_made = True
                 ################################
@@ -202,11 +227,11 @@ def main():
                 move_made = False
             drawGameState(screen, gs, valid_moves, sq_selected)
             clock.tick(MAX_FPS)
-            subScreen(screen, "Blue score: " + str(blue_score), 30, (256, 112), (576, 0), (0, 0, 255))
-            subScreen(screen, "Blue lost: " + str(blue_lost), 30, (256, 112), (576, 112), (0, 0, 255))
+            subScreen(screen, "Blue score: " + str(blue_score), 24, (224, 90), (504, 0), (0, 0, 255))
+            subScreen(screen, "Blue lost: " + str(blue_lost), 24, (224, 90), (504, 90), (0, 0, 255))
             cal.draw_caltable(screen, events, IMAGES)
-            subScreen(screen, "Red score: " + str(red_score), 30, (256, 112), (576, 480), (255, 0, 0))
-            subScreen(screen, "Red lost: " + str(red_lost), 30, (256, 112), (576, 592), (255, 0, 0))
+            subScreen(screen, "Red score: " + str(red_score), 24, (224, 90), (504, 436), (255, 0, 0))
+            subScreen(screen, "Red lost: " + str(red_lost), 24, (224, 90), (504, 526), (255, 0, 0))
             valid_attacks = ""
             move_previous = None
             for move in gs.getAllPossibleAttacks():
@@ -215,8 +240,21 @@ def main():
                 valid_attacks += move.piece_captured
                 valid_attacks += " "
                 move_previous = move
-            subScreen(screen, "Available attack: " + valid_attacks, 30, (834, 128), (0, 704), (0, 0, 0))
+            if not game_over and gs.red_to_move:
+                subScreen(screen, 'Red turn', 25, (272, 144), (728, 616), (255, 0, 0))
+            if not game_over and not gs.red_to_move:
+                subScreen(screen, 'Blue turn', 25, (272, 144), (728, 616), (0, 0, 255))
+            subScreen(screen, 'Available Attack: ' + str(valid_attacks), 25, (728, 144), (0, 616), (0, 0, 0))
+            subScreen(screen, "Blue counter: " + str(Blue_Counter), 21, (272, 77), (728, 0), (240, 0, 255))
+            subScreen(screen, "Blue browser nodes: " + str(Blue_Browse), 21, (272, 77), (728, 77), (240, 0, 255))
+            subScreen(screen, "Blue total nodes: " + str(Blue_Node), 21, (272, 77), (728, 154), (240, 0, 255))
+            subScreen(screen, "Blue browser ratio: " + str(Blue_AI_Ratio), 21, (272, 77), (728, 231), (240, 0, 255))
+            subScreen(screen, "Red browser ratio: " + str(Red_AI_Ratio), 21, (272, 77), (728, 308), (240, 0, 255))
+            subScreen(screen, "Red total nodes: " + str(Red_Node), 21, (272, 77), (728, 385), (240, 0, 255))
+            subScreen(screen, "Red browser nodes: " + str(Red_Browse), 21, (272, 77), (728, 462), (240, 0, 255))
+            subScreen(screen, "Red counter: " + str(Red_Counter), 21, (272, 77), (728, 539), (240, 0, 255))
             pygame.display.flip()
+
 
 
 def loadImages():
@@ -229,6 +267,7 @@ def loadImages():
     for piece in pieces:
         IMAGES[piece] = pygame.transform.scale(pygame.image.load("image/" + piece + ".png"),
                                                (SQ_SIZE - 10, SQ_SIZE - 10))
+
 
 
 def score(gs):

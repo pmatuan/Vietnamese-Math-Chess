@@ -27,6 +27,9 @@ class GameState:
         self.zeroRed = (9, 4)
         self.zeroBlue = (1, 4)
         self.move_log = []
+        self.move = []
+        self.TrongAnhNguocmove = []
+
 
     def check(self):
         if self.board[1][4] != "b0" or self.board[9][4] != "r0":
@@ -37,6 +40,8 @@ class GameState:
         self.board[move.start_row][move.start_col] = "--"
         self.board[move.end_row][move.end_col] = move.piece_moved
         self.move_log.append(move)  # log the move so we can undo it later
+        self.move.append(str(move.piece_moved[0]))
+        self.TrongAnhNguocmove = self.move[::-1]
         self.red_to_move = not self.red_to_move  # swap player
 
     '''

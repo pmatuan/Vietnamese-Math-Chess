@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e39496f-9e91-4f46-9947-d6129a8577c9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/AI.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/AI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/Minimax.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/Minimax.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/Negamax.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/Negamax.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/Negascout.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/Negascout.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Engine/GameState.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engine/GameState.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/cal.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI/cal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +30,19 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="965a7d25-6af1-44ce-b377-131027f3617d" />
+        <option name="url" value="https://github.com/pmatuan/Vietnamese-Math-Chess" />
+      </UrlAndAccount>
+    </option>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -34,19 +54,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/pmat/Downloads/Vietnamese-Math-Chess-threading",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "preferences.general",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/pmat/Downloads/Vietnamese-Math-Chess-threading&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/AI" />
@@ -108,7 +128,7 @@
       <workItem from="1675216477105" duration="116000" />
       <workItem from="1675229894785" duration="12274000" />
       <workItem from="1675243280013" duration="275000" />
-      <workItem from="1675243686561" duration="682000" />
+      <workItem from="1675243686561" duration="1792000" />
     </task>
     <servers />
   </component>
@@ -125,9 +145,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Vietnamese_Math_Chess_V3$main.coverage" NAME="main Coverage Results" MODIFIED="1674617550596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Vietnamese_Math_Chess$main.coverage" NAME="main Coverage Results" MODIFIED="1675243508752" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
