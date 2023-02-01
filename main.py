@@ -1,4 +1,7 @@
 import time
+
+import pygame
+
 from Engine.GameState import GameState
 from Engine.Move import Move
 from AI.Negamax import Negamax
@@ -9,10 +12,11 @@ from UI.UI import *
 from UI.cal import *
 
 WIDTH = 832
-HEIGHT = 704
+HEIGHT = 832
+#704
 C_DIMENSION = 9
 R_DIMENSION = 11
-SQ_SIZE = HEIGHT // R_DIMENSION
+SQ_SIZE = 64
 MAX_FPS = 10
 IMAGES = {}
 
@@ -45,13 +49,23 @@ def loadImages():
 def score(gs):
     score_red = 0
     score_blue = 0
+    remaining_red = []
+    remaining_blue = []
     for row in gs.board:
         for square in row:
             if square[0] == "r":
                 score_red += int(square[1])
+                remaining_red.append(int(square[1]))
             elif square[0] == "b":
                 score_blue += int(square[1])
-    return 45 - score_blue, 45 - score_red
+                remaining_blue.append(int(square[1]))
+    lost_red = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}.difference(set(remaining_red))
+    lost_blue = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}.difference(set(remaining_blue))
+    if lost_red == set():
+        lost_red = None
+    if lost_blue == set():
+        lost_blue = None
+    return 45 - score_blue, 45 - score_red, lost_red, lost_blue
 
 
 def main():
@@ -78,7 +92,7 @@ def main():
     scene = scenes['TITLE']
     cal = Calculation()
     while running:
-        if end_UI == True:
+        if end_UI:
             screen = pygame.display.set_mode((640, 480))
             events = pygame.event.get()
             for e in events:
@@ -188,6 +202,8 @@ def main():
             # calculate red score
             red_score = score(gs)[0]
             blue_score = score(gs)[1]
+            red_lost = score(gs)[2]
+            blue_lost = score(gs)[3]
             if red_score >= 15 or blue_score >= 15:
                 game_over = True
             game_over = game_over or gs.check()
@@ -223,32 +239,33 @@ def main():
                 move_made = False
             drawGameState(screen, gs, valid_moves, sq_selected)
             clock.tick(MAX_FPS)
-
-            sub_screen3 = pygame.Surface((256, 176))
-            sub_screen3.fill((255, 0, 0))
-            # Write some text on the sub-screen
-            font = pygame.font.Font(None, 36)
-            text = font.render("Red score: " + str(red_score), True, (255, 255, 255))
-            text_rect = text.get_rect()
-            text_rect.centerx = sub_screen3.get_rect().centerx
-            text_rect.centery = sub_screen3.get_rect().centery
-            sub_screen3.blit(text, text_rect)
-            # Blit the sub-screen onto the main screen
-            screen.blit(sub_screen3, (576, 528))
+            subScreen(screen, "Blue score: " + str(blue_score), 30, (256, 112), (576, 0), (0, 0, 255))
+            subScreen(screen, "Blue lost: " + str(blue_lost), 30, (256, 112), (576, 112), (0, 0, 255))
             cal.draw_caltable(screen, events, IMAGES)
-            sub_screen2 = pygame.Surface((256, 176))
-            sub_screen2.fill((0, 0, 255))
-            # Write some text on the sub-screen
-            font = pygame.font.Font(None, 36)
-            text = font.render("Blue score: " + str(blue_score), True, (255, 255, 255))
-            text_rect = text.get_rect()
-            text_rect.centerx = sub_screen2.get_rect().centerx
-            text_rect.centery = sub_screen2.get_rect().centery
-            sub_screen2.blit(text, text_rect)
-            # Blit the sub-screen onto the main screen
-            screen.blit(sub_screen2, (576, 0))
-            # Update the display
+            subScreen(screen, "Red score: " + str(red_score), 30, (256, 112), (576, 480), (255, 0, 0))
+            subScreen(screen, "Red lost: " + str(red_lost), 30, (256, 112), (576, 592), (255, 0, 0))
+            valid_attacks = ""
+            move_previous = None
+            for move in gs.getAllPossibleAttacks():
+                if move_previous == move:
+                    continue
+                valid_attacks += move.piece_captured
+                valid_attacks += " "
+                move_previous = move
+            subScreen(screen, "Available attack: " + valid_attacks, 30, (834, 128), (0, 704), (0, 0, 0))
             pygame.display.flip()
+
+
+def subScreen(screen, message, font_size, area, location, color):
+    sub_screen = pygame.Surface(area)
+    sub_screen.fill(color)
+    font = pygame.font.Font(None, font_size)
+    text = font.render(message, True, (255, 255, 255))
+    text_rect = text.get_rect()
+    text_rect.centerx = sub_screen.get_rect().centerx
+    text_rect.centery = sub_screen.get_rect().centery
+    sub_screen.blit(text, text_rect)
+    screen.blit(sub_screen, location)
 
 
 '''
