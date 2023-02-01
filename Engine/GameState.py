@@ -201,7 +201,6 @@ class GameState:
                     end_piece = self.board[end_row][end_col]
                     if end_piece[0] == enemy_color:
                         captures.append(Move(piece_state, (end_row, end_col), self.board))
-                        return str(end_row) + str(end_col)
-        return None
+
 
 

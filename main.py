@@ -19,7 +19,7 @@ from UI.CAL import *
 
 
 WIDTH = 760
-HEIGHT = 616
+HEIGHT = 756
 C_DIMENSION = 9
 R_DIMENSION = 11
 SQ_SIZE = 56
@@ -50,6 +50,7 @@ def loadImages():
     for piece in pieces:
         IMAGES[piece] = pygame.transform.scale(pygame.image.load("image/" + piece + ".png"),
                                                (SQ_SIZE - 10, SQ_SIZE - 10))
+
 
 
 def scoreMaterial(gs):
@@ -87,9 +88,60 @@ end_UI = 1
 gs = GameState()
 
 
+def Attacking(gs):
+    attacking_material = []
+    if gs.red_to_move:
+        color_team = 'r'
+        color_enemy = 'b'
+    else:
+        color_team = 'b'
+        color_enemy = 'r'
+    for i in range(0, 10):
+        for j in range(0, 8):
+            if gs.board[i][j] == '--':
+                gs.board[i][j] == 'x0'
+            if gs.board[i][j][0] == color_team:
+                for k in [-1, 0, 1]:
+                    for l in [-1, 0, 1]:
+                        if -1 < i+k < 11 and -1 < j+l < 9:
+                            if gs.board[i+k][j+l][0] == color_team:
+                                piece = int(gs.board[i][j][1])
+                                team_piece = int(gs.board[i+k][j+l][1])
 
+                                if team_piece == 0:
+                                    attack_add = (piece + team_piece) % 10
+                                    attack_sub = (piece - team_piece)
+                                    attack_multi = (piece * team_piece) % 10
+                                    attack_division = attack_remainder = 0
+                                else:
+                                    attack_add = (piece + team_piece) % 10
+                                    attack_sub = (piece - team_piece)
+                                    attack_multi = (piece * team_piece) % 10
+                                    attack_division = (piece // team_piece)
+                                    attack_remainder = piece % team_piece
+                                    if attack_add > 0:
+                                        if -1 < i + k*(attack_add+1) < 11 and -1 < j + l*(attack_add+1) < 9:
+                                            if gs.board[i + k*(attack_add+1)][j + l*(attack_add+1)][0] == color_enemy:
+                                                attacking_material.append(gs.board[i + k*(attack_add+1)][j + l*(attack_add+1)])
+                                    if attack_sub > 0:
+                                        if -1 < i + k*(attack_sub+1) < 11 and -1 < j + l*(attack_sub+1) < 9:
+                                            if gs.board[i + k*(attack_sub+1)][j + l*(attack_sub+1)][0] == color_enemy:
+                                                attacking_material.append(gs.board[i + k*(attack_sub+1)][j + l*(attack_sub+1)])
+                                    if attack_multi > 0:
+                                        if -1 < i + k*(attack_multi+1) < 11 and -1 < j + l*(attack_multi+1) < 9:
+                                            if gs.board[i + k*(attack_multi+1)][j + l*(attack_multi+1)][0] == color_enemy:
+                                                attacking_material.append(gs.board[i + k * (attack_multi + 1)][j + l * (attack_multi + 1)])
+                                    if attack_division > 0:
+                                        if -1 < i + k*(attack_division+1) < 11 and -1 < j + l*(attack_division+1) < 9:
+                                            if gs.board[i + k*(attack_division+1)][j + l*(attack_division+1)][0] == color_enemy:
+                                                attacking_material.append(gs.board[i + k * (attack_division + 1)][j + l * (attack_division + 1)])
+                                    if attack_remainder > 0:
+                                        if -1 < i + k*(attack_remainder+1) < 11 and -1 < j + l*(attack_remainder+1) < 9:
+                                            if gs.board[i + k*(attack_remainder+1)][j + l*(attack_remainder+1)][0] == color_enemy:
+                                                attacking_material.append(gs.board[i + k * (attack_remainder + 1)][j + l * (attack_remainder + 1)])
+    new_list = list(set(attacking_material))
 
-
+    return new_list
 
 
 def main(gs):
@@ -308,6 +360,15 @@ def main(gs):
             text_rect.centery = sub_screen4.get_rect().centery
             sub_screen4.blit(text, text_rect)
             screen.blit(sub_screen4, (504, 90))
+            sub_screen5 = pygame.Surface((760, 140))
+            sub_screen5.fill((128, 0, 128))
+            font = pygame.font.Font(None, 24)
+            text = font.render("Material can attacked:" + str(Attacking(gs)), True, (255, 255, 255))
+            text_rect = text.get_rect()
+            text_rect.centerx = sub_screen5.get_rect().centerx
+            text_rect.centery = sub_screen5.get_rect().centery
+            sub_screen5.blit(text, text_rect)
+            screen.blit(sub_screen5, (0, 616))
             pygame.display.flip()
 
 
