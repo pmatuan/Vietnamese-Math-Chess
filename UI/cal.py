@@ -104,7 +104,7 @@ class Calculation:
                                        HEIGHT_CAL // 5)
                     screen.blit(pygame.transform.scale(IMAGES[piece], (WIDTH_CAL // 7, WIDTH_CAL // 7)), rect)
         else:
-            if self.cal_num_1 + self.cal_num_2 > 0:
+            if self.cal_num_1 + self.cal_num_2 > 0 and self.cal_num_1 + self.cal_num_2 == 10:
                 text_3 = font_1.render(title_3, True, pygame.Color(212, 88, 88))
             else:
                 text_3 = font.render(title_3, True, pygame.Color(144, 8, 8))
