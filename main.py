@@ -1,7 +1,5 @@
 import time
 
-import pygame
-
 from Engine.GameState import GameState
 from Engine.Move import Move
 from AI.Negamax import Negamax
@@ -13,7 +11,6 @@ from UI.cal import *
 
 WIDTH = 832
 HEIGHT = 832
-#704
 C_DIMENSION = 9
 R_DIMENSION = 11
 SQ_SIZE = 64
@@ -32,40 +29,6 @@ bot_ai = {
     'Minimax': Minimax(),
     'Greedy': Greedy()
 }
-
-
-def loadImages():
-    """
-    Initialize a global directory of images.
-    This will be called exactly once in the main.
-    """
-    pieces = ["b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9",
-              "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9"]
-    for piece in pieces:
-        IMAGES[piece] = pygame.transform.scale(pygame.image.load("image/" + piece + ".png"),
-                                               (SQ_SIZE - 10, SQ_SIZE - 10))
-
-
-def score(gs):
-    score_red = 0
-    score_blue = 0
-    remaining_red = []
-    remaining_blue = []
-    for row in gs.board:
-        for square in row:
-            if square[0] == "r":
-                score_red += int(square[1])
-                remaining_red.append(int(square[1]))
-            elif square[0] == "b":
-                score_blue += int(square[1])
-                remaining_blue.append(int(square[1]))
-    lost_red = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}.difference(set(remaining_red))
-    lost_blue = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}.difference(set(remaining_blue))
-    if lost_red == set():
-        lost_red = None
-    if lost_blue == set():
-        lost_blue = None
-    return 45 - score_blue, 45 - score_red, lost_red, lost_blue
 
 
 def main():
@@ -256,6 +219,40 @@ def main():
             pygame.display.flip()
 
 
+def loadImages():
+    """
+    Initialize a global directory of images.
+    This will be called exactly once in the main.
+    """
+    pieces = ["b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9",
+              "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9"]
+    for piece in pieces:
+        IMAGES[piece] = pygame.transform.scale(pygame.image.load("image/" + piece + ".png"),
+                                               (SQ_SIZE - 10, SQ_SIZE - 10))
+
+
+def score(gs):
+    score_red = 0
+    score_blue = 0
+    remaining_red = []
+    remaining_blue = []
+    for row in gs.board:
+        for square in row:
+            if square[0] == "r":
+                score_red += int(square[1])
+                remaining_red.append(int(square[1]))
+            elif square[0] == "b":
+                score_blue += int(square[1])
+                remaining_blue.append(int(square[1]))
+    lost_red = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}.difference(set(remaining_red))
+    lost_blue = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}.difference(set(remaining_blue))
+    if lost_red == set():
+        lost_red = None
+    if lost_blue == set():
+        lost_blue = None
+    return 45 - score_blue, 45 - score_red, lost_red, lost_blue
+
+
 def subScreen(screen, message, font_size, area, location, color):
     sub_screen = pygame.Surface(area)
     sub_screen.fill(color)
@@ -266,11 +263,6 @@ def subScreen(screen, message, font_size, area, location, color):
     text_rect.centery = sub_screen.get_rect().centery
     sub_screen.blit(text, text_rect)
     screen.blit(sub_screen, location)
-
-
-'''
-Highlight square selected and moves for piece selected
-'''
 
 
 def highlightSquares(screen, gs, valid_moves, sq_selected):
