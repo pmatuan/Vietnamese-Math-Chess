@@ -3,11 +3,11 @@ Main driver file.
 Handling user input.
 Displaying current GameStatus object.
 """
-import textwrap
+
 import pygame
-import threading
+
 import time
-import datetime
+
 from Engine.GameState import GameState
 from Engine.Move import Move
 from AI.Negamax import Negamax
@@ -16,11 +16,10 @@ from AI.Minimax import Minimax
 from AI.Greedy import Greedy
 from UI.UI import *
 from UI.CAL import *
-from UI.Highlight import *
 
 
 WIDTH = 760
-HEIGHT = 736
+HEIGHT = 616
 C_DIMENSION = 9
 R_DIMENSION = 11
 SQ_SIZE = 56
@@ -78,6 +77,10 @@ def scoreMaterial(gs):
     score_4 = 1000045 - score_1
     material_3 = set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).difference(set(material_1))
     material_4 = set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).difference(set(material_2))
+    if material_3 == set():
+        material_3 = None
+    if material_4 == set():
+        material_4 = None
     return score_3, score_4, material_3, material_4
 
 end_UI = 1
@@ -100,7 +103,6 @@ def main(gs):
     valid_moves = gs.getValidMoves()
     move_made = False  # flag variable for when a move is made
     loadImages()
-    highlight_menu = Highlight(screen)
     running = True
     sq_selected = ()  # no square is selected, keep track of the last click of the user (tuple: (row, col))
     player_clicks = []  # keep track of the player clicks
@@ -227,7 +229,6 @@ def main(gs):
                         gs.undoMove()
                         gs.undoMove()
                         move_made = True
-                highlight_menu.handle_events(event)
             # Calculate red score
             red_score = scoreMaterial(gs)[0]
             blue_score = scoreMaterial(gs)[1]
@@ -262,9 +263,7 @@ def main(gs):
                 move_made = False
             drawGameState(screen, gs, valid_moves, sq_selected)
             clock.tick(MAX_FPS)
-            highlight_menu.render()
-            highlight_menu.update()
-            sub_screen3 = pygame.Surface((256, 77))
+            sub_screen3 = pygame.Surface((256, 90))
             sub_screen3.fill((255, 0, 0))
             # Write some text on the sub-screen
             font = pygame.font.Font(None, 24)
@@ -274,9 +273,9 @@ def main(gs):
             text_rect.centery = sub_screen3.get_rect().centery
             sub_screen3.blit(text, text_rect)
             # Blit the sub-screen onto the main screen
-            screen.blit(sub_screen3, (504, 539))
+            screen.blit(sub_screen3, (504, 526))
             CAL.draw_caltable(screen,events,IMAGES)
-            sub_screen2 = pygame.Surface((256, 77))
+            sub_screen2 = pygame.Surface((256, 90))
             sub_screen2.fill((0, 0, 255))
             # Write some text on the sub-screen
             font = pygame.font.Font(None, 24)
@@ -291,7 +290,7 @@ def main(gs):
             pygame.display.flip()
             redlostmaterial = scoreMaterial(gs)[2]
             bluelostmaterial = scoreMaterial(gs)[3]
-            sub_screen1 = pygame.Surface((256, 77))
+            sub_screen1 = pygame.Surface((256, 90))
             sub_screen1.fill((255, 0, 0))
             font = pygame.font.Font(None, 24)
             text = font.render("Red lost material:" + str(redlostmaterial), True, (255, 255, 255))
@@ -299,8 +298,8 @@ def main(gs):
             text_rect.centerx = sub_screen1.get_rect().centerx
             text_rect.centery = sub_screen1.get_rect().centery
             sub_screen1.blit(text, text_rect)
-            screen.blit(sub_screen1, (504, 462))
-            sub_screen4 = pygame.Surface((256, 77))
+            screen.blit(sub_screen1, (504, 436))
+            sub_screen4 = pygame.Surface((256, 90))
             sub_screen4.fill((0, 0, 255))
             font = pygame.font.Font(None, 24)
             text = font.render("Blue lost material:" + str(bluelostmaterial), True, (255, 255, 255))
@@ -308,22 +307,7 @@ def main(gs):
             text_rect.centerx = sub_screen4.get_rect().centerx
             text_rect.centery = sub_screen4.get_rect().centery
             sub_screen4.blit(text, text_rect)
-            screen.blit(sub_screen4, (504, 77))
-            pygame.display.flip()
-            import textwrap
-
-            sub_screen5 = pygame.Surface((504, 120))
-            sub_screen5.fill((255, 255, 255))
-            font = pygame.font.Font(None, 16)
-            text_lines = textwrap.wrap(str(gs.move), width=100)  # wrap the text with width of 50 pixels
-
-            y_offset = 0
-            for line in text_lines:
-                text = font.render(line, True, (0, 0, 0))
-                sub_screen5.blit(text, (0, y_offset))
-                y_offset += font.get_height()
-
-            screen.blit(sub_screen5, (0, 616))
+            screen.blit(sub_screen4, (504, 90))
             pygame.display.flip()
 
 
