@@ -345,7 +345,7 @@ def main(gs):
             sub_screen1 = pygame.Surface((256, 90))
             sub_screen1.fill((255, 0, 0))
             font = pygame.font.Font(None, 24)
-            text = font.render("Red lost material:" + str(redlostmaterial), True, (255, 255, 255))
+            text = font.render("Red lost material: " + str(redlostmaterial), True, (255, 255, 255))
             text_rect = text.get_rect()
             text_rect.centerx = sub_screen1.get_rect().centerx
             text_rect.centery = sub_screen1.get_rect().centery
@@ -354,7 +354,7 @@ def main(gs):
             sub_screen4 = pygame.Surface((256, 90))
             sub_screen4.fill((0, 0, 255))
             font = pygame.font.Font(None, 24)
-            text = font.render("Blue lost material:" + str(bluelostmaterial), True, (255, 255, 255))
+            text = font.render("Blue lost material: " + str(bluelostmaterial), True, (255, 255, 255))
             text_rect = text.get_rect()
             text_rect.centerx = sub_screen4.get_rect().centerx
             text_rect.centery = sub_screen4.get_rect().centery
