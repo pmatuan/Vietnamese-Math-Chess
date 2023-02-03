@@ -9,6 +9,22 @@ from AI.Greedy import Greedy
 from UI.UI import *
 from UI.cal import *
 
+from reportlab.pdfgen import canvas
+import matplotlib.pyplot as plt
+
+def draw_list(data, title, filename):
+    plt.plot(data)
+    plt.xlabel('Index')
+    plt.ylabel('Value')
+    plt.title(title)
+    plt.savefig(filename)
+def list_to_pdf(data, filename):
+    c = canvas.Canvas(filename)
+    for item in data:
+        c.drawString(100, 800, str(item))
+        c.showPage()
+    c.save()
+
 WIDTH = 1000
 HEIGHT = 760
 C_DIMENSION = 9
@@ -16,14 +32,12 @@ R_DIMENSION = 11
 SQ_SIZE = 56
 MAX_FPS = 10
 IMAGES = {}
-Red_Browse = 'None (Human or Greedy)'
-Blue_Browse = 'None (Human or Greedy)'
-Red_Node = 'None (Human or Greedy)'
-Blue_Node = 'None (Human or Greedy)'
-Red_AI_Ratio = 'None (Human or Greedy)'
-Blue_AI_Ratio = 'None (Human or Greedy)'
-Red_Counter = 'None (Human or Greedy)'
-Blue_Counter = 'None (Human or Greedy)'
+Red_Browse = 'None'
+Blue_Browse = 'None'
+Red_Counter = 'None'
+Blue_Counter = 'None'
+Red_AI_Time = 'None'
+Blue_AI_Time = 'None'
 
 
 scenes = {
@@ -63,12 +77,16 @@ def main():
     end_UI = True
     global Red_Browse
     global Blue_Browse
-    global Red_Node
-    global Blue_Node
-    global Red_AI_Ratio
-    global Blue_AI_Ratio
     global Red_Counter
     global Blue_Counter
+    global Red_AI_Time
+    global Blue_AI_Time
+    red_browse = []
+    blue_browse = []
+    red_counter = []
+    blue_counter = []
+    red_ai_time = []
+    blue_ai_time = []
     scene = scenes['TITLE']
     cal = Calculation()
     while running:
@@ -202,11 +220,15 @@ def main():
                 else:
                     AIMove = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)[0]
                     Blue_Browse = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)[1]
-                    Blue_Node = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)[2]
-                    Blue_Counter = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)[3]
-                    Blue_AI_Ratio = Blue_Browse/Blue_Node
+                    Blue_Counter = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)[2]
+                    Blue_AI_Time = AI_BLUE.findMove(gs, valid_moves, DEPTH_AI_BLUE)[3]
+                    blue_browse.append(Blue_Browse)
+                    blue_counter.append(Blue_Counter)
+                    blue_ai_time.append(Blue_AI_Time)
                 gs.makeMove(AIMove)
                 move_made = True
+
+
                 ################################
 
             elif not game_over and not human_turn and AI_RED and gs.red_to_move:
@@ -216,9 +238,11 @@ def main():
                 else:
                     AIMove = AI_RED.findMove(gs, valid_moves, DEPTH_AI_RED)[0]
                     Red_Browse = AI_RED.findMove(gs, valid_moves, DEPTH_AI_RED)[1]
-                    Red_Node = AI_RED.findMove(gs, valid_moves, DEPTH_AI_RED)[2]
-                    Red_Counter = AI_RED.findMove(gs, valid_moves, DEPTH_AI_RED)[3]
-                    Red_AI_Ratio = Red_Browse/Red_Node
+                    Red_Counter = AI_RED.findMove(gs, valid_moves, DEPTH_AI_RED)[2]
+                    Red_AI_Time = AI_RED.findMove(gs, valid_moves, DEPTH_AI_RED)[3]
+                    red_browse.append(Red_Browse)
+                    red_counter.append(Red_Counter)
+                    red_ai_time.append(Red_AI_Time)
                 gs.makeMove(AIMove)
                 move_made = True
                 ################################
@@ -245,15 +269,18 @@ def main():
             if not game_over and not gs.red_to_move:
                 subScreen(screen, 'Blue turn', 25, (272, 144), (728, 616), (0, 0, 255))
             subScreen(screen, 'Available Attack: ' + str(valid_attacks), 25, (728, 144), (0, 616), (0, 0, 0))
-            subScreen(screen, "Blue counter: " + str(Blue_Counter), 21, (272, 77), (728, 0), (240, 0, 255))
-            subScreen(screen, "Blue browser nodes: " + str(Blue_Browse), 21, (272, 77), (728, 77), (240, 0, 255))
-            subScreen(screen, "Blue total nodes: " + str(Blue_Node), 21, (272, 77), (728, 154), (240, 0, 255))
-            subScreen(screen, "Blue browser ratio: " + str(Blue_AI_Ratio), 21, (272, 77), (728, 231), (240, 0, 255))
-            subScreen(screen, "Red browser ratio: " + str(Red_AI_Ratio), 21, (272, 77), (728, 308), (240, 0, 255))
-            subScreen(screen, "Red total nodes: " + str(Red_Node), 21, (272, 77), (728, 385), (240, 0, 255))
-            subScreen(screen, "Red browser nodes: " + str(Red_Browse), 21, (272, 77), (728, 462), (240, 0, 255))
-            subScreen(screen, "Red counter: " + str(Red_Counter), 21, (272, 77), (728, 539), (240, 0, 255))
+            subScreen(screen, "Blue AI: " + str(AI_BLUE), 21, (272, 77), (728, 0), (128, 0, 128))
+            subScreen(screen, "Red AI: " + str(AI_RED), 21, (272, 77), (728, 539), (240, 0, 255))
+            subScreen(screen, "Blue AI calculating: " + str(Blue_AI_Time), 21, (272, 77), (728, 231), (128, 0, 128))
+            subScreen(screen, "Blue counter: " + str(Blue_Counter), 21, (272, 77), (728, 77), (128, 0, 128))
+            subScreen(screen, "Blue browser nodes: " + str(Blue_Browse), 21, (272, 77), (728, 154), (128, 0, 128))
+            subScreen(screen, "Red browser nodes: " + str(Red_Browse), 21, (272, 77), (728, 385), (240, 0, 255))
+            subScreen(screen, "Red counter: " + str(Red_Counter), 21, (272, 77), (728, 462), (240, 0, 255))
+            subScreen(screen, "Red AI calculating: " + str(Red_AI_Time), 21, (272, 77), (728, 308),
+                      (240, 0, 255))
             pygame.display.flip()
+    return AI_RED, red_browse, red_counter, red_ai_time, AI_BLUE, blue_browse, blue_counter, blue_ai_time
+
 
 
 

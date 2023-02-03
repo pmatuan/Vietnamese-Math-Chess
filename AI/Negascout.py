@@ -1,4 +1,5 @@
 import random
+import time
 
 from AI.AI import AI
 
@@ -6,15 +7,17 @@ from AI.AI import AI
 class Negascout(AI):
 
     def findMove(self, gs, valid_moves, depth):
+        start_time = time.time()
         self.DEPTH = depth
         random.shuffle(valid_moves)
         self.browsed_nodes = 0
         self.total_nodes = 0
         self.counter = 0
-        self.findMoveMinimax(gs, valid_moves, self.DEPTH, gs.red_to_move)
         self.findMoveNegascout(gs, valid_moves, self.DEPTH, -self.CHECKMATE, self.CHECKMATE,
                                       1 if gs.red_to_move else -1)
-        return self.next_move, self.browsed_nodes, self.total_nodes, self.counter
+        end_time = time.time()
+        return self.next_move, self.browsed_nodes, self.counter, end_time - start_time
+
 
     def findMoveNegascout(self, gs, valid_moves, depth, alpha, beta, turn):
         best_move = None
@@ -61,31 +64,3 @@ class Negascout(AI):
                 alpha = score
         return alpha
 
-    def findMoveMinimax(self, gs, valid_moves, depth, red_to_move):
-        self.total_nodes += 1
-        if depth == 0:
-            return self.scoreMaterial(gs)
-        if red_to_move:
-            max_score = -self.CHECKMATE
-            for move in valid_moves:
-                gs.makeMove(move)
-                next_moves = gs.getValidMoves()
-                score = self.findMoveMinimax(gs, next_moves, depth - 1, False)
-                gs.undoMove()
-                if score > max_score:
-                    max_score = score
-                    if depth == self.DEPTH:
-                        self.next_move1 = move
-            return max_score
-        else:
-            min_score = self.CHECKMATE
-            for move in valid_moves:
-                gs.makeMove(move)
-                next_moves = gs.getValidMoves()
-                score = self.findMoveMinimax(gs, next_moves, depth - 1, True)
-                gs.undoMove()
-                if score < min_score:
-                    min_score = score
-                    if depth == self.DEPTH:
-                        self.next_move1 = move
-            return min_score

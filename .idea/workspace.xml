@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e39496f-9e91-4f46-9947-d6129a8577c9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="5e39496f-9e91-4f46-9947-d6129a8577c9" name="Changes" comment="Update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AI/AI.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/AI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AI/Minimax.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/Minimax.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AI/Negamax.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/Negamax.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AI/Negascout.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/Negascout.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Engine/GameState.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engine/GameState.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/cal.py" beforeDir="false" afterPath="$PROJECT_DIR$/UI/cal.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,13 +24,23 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="pmatuan &lt;tuanphanminhanh@gmail.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -130,6 +136,28 @@
       <workItem from="1675243280013" duration="275000" />
       <workItem from="1675243686561" duration="1792000" />
     </task>
+    <task id="LOCAL-00001" summary="Update">
+      <created>1675406194537</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1675406194537</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Update">
+      <created>1675406211049</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1675406211049</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Update">
+      <created>1675406229835</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1675406229835</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,5 +173,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update" />
   </component>
 </project>
