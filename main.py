@@ -38,7 +38,8 @@ Red_Counter = 'None'
 Blue_Counter = 'None'
 Red_AI_Time = 'None'
 Blue_AI_Time = 'None'
-
+ai_red = 'Human'
+ai_blue = 'Human'
 
 scenes = {
     'TITLE': SimpleScene('Cờ toán Việt Nam'),
@@ -81,6 +82,8 @@ def main():
     global Blue_Counter
     global Red_AI_Time
     global Blue_AI_Time
+    global ai_red
+    global ai_blue
     red_browse = []
     blue_browse = []
     red_counter = []
@@ -196,6 +199,22 @@ def main():
                         gs.undoMove()
                         gs.undoMove()
                         move_made = True
+            if AI_RED == bot_ai['Minimax']:
+                ai_red = 'Minimax'
+            if AI_RED == bot_ai['Negamax']:
+                ai_red = 'Negamax'
+            if AI_RED == bot_ai['Negascout']:
+                ai_red = 'Negascout'
+            if AI_RED == bot_ai['Greedy']:
+                ai_red = 'Greedy'
+            if AI_BLUE == bot_ai['Minimax']:
+                ai_blue = 'Minimax'
+            if AI_BLUE == bot_ai['Negamax']:
+                ai_blue = 'Negamax'
+            if AI_BLUE == bot_ai['Negascout']:
+                ai_blue = 'Negascout'
+            if AI_BLUE == bot_ai['Greedy']:
+                ai_blue = 'Greedy'
 
             # calculate red score
             red_score = score(gs)[0]
@@ -269,8 +288,8 @@ def main():
             if not game_over and not gs.red_to_move:
                 subScreen(screen, 'Blue turn', 25, (272, 144), (728, 616), (0, 0, 255))
             subScreen(screen, 'Available Attack: ' + str(valid_attacks), 25, (728, 144), (0, 616), (0, 0, 0))
-            subScreen(screen, "Blue AI: " + str(AI_BLUE), 21, (272, 77), (728, 0), (128, 0, 128))
-            subScreen(screen, "Red AI: " + str(AI_RED), 21, (272, 77), (728, 539), (240, 0, 255))
+            subScreen(screen, "Blue player: " + ai_blue, 21, (272, 77), (728, 0), (128, 0, 128))
+            subScreen(screen, "Red player: " + ai_red, 21, (272, 77), (728, 539), (240, 0, 255))
             subScreen(screen, "Blue AI calculating: " + str(Blue_AI_Time), 21, (272, 77), (728, 231), (128, 0, 128))
             subScreen(screen, "Blue counter: " + str(Blue_Counter), 21, (272, 77), (728, 77), (128, 0, 128))
             subScreen(screen, "Blue browser nodes: " + str(Blue_Browse), 21, (272, 77), (728, 154), (128, 0, 128))
