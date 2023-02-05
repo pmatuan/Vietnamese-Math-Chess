@@ -11,6 +11,7 @@ from UI.cal import *
 
 from reportlab.pdfgen import canvas
 import matplotlib.pyplot as plt
+import random
 
 def draw_list(data, title, filename):
     plt.plot(data)
@@ -298,7 +299,46 @@ def main():
             subScreen(screen, "Red AI calculating: " + str(Red_AI_Time), 21, (272, 77), (728, 308),
                       (240, 0, 255))
             pygame.display.flip()
-    return AI_RED, red_browse, red_counter, red_ai_time, AI_BLUE, blue_browse, blue_counter, blue_ai_time
+        if running == False:
+            a = random.randint(0,100)
+            if len(red_browse)>0:
+                title = str(ai_red) + ' Visited Node'
+                filename1 = str(ai_red) + str(a) + 'redbrowse.png'
+                draw_list(red_browse, title, filename1)
+                filename2 = str(ai_red) + str(a) + 'redbrowse.pdf'
+                list_to_pdf(red_browse, filename2)
+            if len(red_counter)>0:
+                title = str(ai_red) + ' Counter'
+                filename1 = str(ai_red) + str(a) + 'redcounter.png'
+                draw_list(red_counter, title, filename1)
+                filename2 = str(ai_red) + str(a) + 'redcounter.pdf'
+                list_to_pdf(red_counter, filename2)
+            if len(red_ai_time)>0:
+                title = str(ai_red) + ' Calculation Time'
+                filename1 = str(ai_red) + str(a) + 'redaitime.png'
+                draw_list(red_ai_time, title, filename1)
+                filename2 = str(ai_red) + str(a) + 'redaitime.pdf'
+                list_to_pdf(red_ai_time, filename2)
+            if len(blue_browse)>0:
+                title = str(ai_blue) + ' Visited Node'
+                filename1 = str(ai_blue) + str(a) + 'bluebrowse.png'
+                draw_list(blue_browse, title, filename1)
+                filename2 = str(ai_blue) + str(a) + 'bluebrowse.pdf'
+                list_to_pdf(blue_browse, filename2)
+            if len(blue_counter)>0:
+                title = str(ai_blue) + ' Counter'
+                filename1 = str(ai_blue) + str(a) + 'bluecounter.png'
+                draw_list(blue_counter, title, filename1)
+                filename2 = str(ai_blue) + str(a) + 'bluecounter.pdf'
+                list_to_pdf(blue_counter, filename2)
+            if len(red_ai_time)>0:
+                title = str(ai_blue) + ' Calculation Time'
+                filename1 = str(ai_blue) + str(a) + 'blueaitime.png'
+                draw_list(blue_ai_time, title, filename1)
+                filename2 = str(ai_blue) + str(a) + 'redaitime.pdf'
+                list_to_pdf(blue_ai_time, filename2)
+
+    return ai_red, red_browse, red_counter, red_ai_time, ai_blue, blue_browse, blue_counter, blue_ai_time
 
 
 
