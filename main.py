@@ -9,22 +9,19 @@ from AI.Greedy import Greedy
 from UI.UI import *
 from UI.cal import *
 
-from reportlab.pdfgen import canvas
-import matplotlib.pyplot as plt
-import random
 
-def draw_list(data, title, filename):
-    plt.plot(data)
-    plt.xlabel('Index')
-    plt.ylabel('Value')
-    plt.title(title)
+import random
+import matplotlib.pyplot as plt
+import numpy as np
+
+def draw_line_graph(lists, colors, titles, filename):
+    fig, ax = plt.subplots()
+    for i in range(len(lists)):
+        ax.plot(lists[i], color=colors[i], label=titles[i])
+    ax.legend()
     plt.savefig(filename)
-def list_to_pdf(data, filename):
-    c = canvas.Canvas(filename)
-    for item in data:
-        c.drawString(100, 800, str(item))
-        c.showPage()
-    c.save()
+
+
 
 WIDTH = 1000
 HEIGHT = 760
@@ -91,6 +88,8 @@ def main():
     blue_counter = []
     red_ai_time = []
     blue_ai_time = []
+    red_ai_time_ms = []
+    blue_ai_time_ms = []
     scene = scenes['TITLE']
     cal = Calculation()
     while running:
@@ -245,6 +244,7 @@ def main():
                     blue_browse.append(Blue_Browse)
                     blue_counter.append(Blue_Counter)
                     blue_ai_time.append(Blue_AI_Time)
+                    blue_ai_time_ms.append(1000*Blue_AI_Time)
                 gs.makeMove(AIMove)
                 move_made = True
 
@@ -263,6 +263,7 @@ def main():
                     red_browse.append(Red_Browse)
                     red_counter.append(Red_Counter)
                     red_ai_time.append(Red_AI_Time)
+                    red_ai_time_ms.append(1000 * Red_AI_Time)
                 gs.makeMove(AIMove)
                 move_made = True
                 ################################
@@ -301,31 +302,28 @@ def main():
             pygame.display.flip()
             if event.type == pygame.QUIT or running == False:
                 a = random.randint(0, 100)
-                if len(red_browse) > 0:
-                    title = str(ai_red) + ' Visited Node'
-                    filename1 = str(ai_red) + str(a) + 'redbrowse.png'
-                    draw_list(red_browse, title, filename1)
-                if len(red_counter) > 0:
-                    title = str(ai_red) + ' Counter'
-                    filename1 = str(ai_red) + str(a) + 'redcounter.png'
-                    draw_list(red_counter, title, filename1)
-                if len(red_ai_time) > 0:
-                    title = str(ai_red) + ' Calculation Time'
-                    filename1 = str(ai_red) + str(a) + 'redaitime.png'
-                    draw_list(red_ai_time, title, filename1)
-                if len(blue_browse) > 0:
-                    title = str(ai_blue) + ' Visited Node'
-                    filename1 = str(ai_blue) + str(a) + 'bluebrowse.png'
-                    draw_list(blue_browse, title, filename1)
-                if len(blue_counter) > 0:
-                    title = str(ai_blue) + ' Counter'
-                    filename1 = str(ai_blue) + str(a) + 'bluecounter.png'
-                    draw_list(blue_counter, title, filename1)
-                if len(red_ai_time) > 0:
-                    title = str(ai_blue) + ' Calculation Time'
-                    filename1 = str(ai_blue) + str(a) + 'blueaitime.png'
-                    draw_list(blue_ai_time, title, filename1)
-    print(ai_red, red_browse, red_counter, red_ai_time, ai_blue, blue_browse, blue_counter, blue_ai_time)
+                if len(red_browse) == 0 and len(blue_browse) > 0:
+                    lists = [blue_browse, blue_counter, blue_ai_time_ms]
+                    colors = ['red', 'yellow', 'brown']
+                    title1 = str(ai_blue) + ' Visited Node'
+                    title2 = str(ai_blue) + ' Counter Move'
+                    title3 = str(ai_blue) + ' Calculating Time(ms)'
+                    titles = [title1, title2, title3]
+                    filename = str(ai_blue) + str(a) + '.png'
+                    draw_line_graph(lists, colors, titles, filename)
+                if len(red_browse) > 0 and len(blue_browse) > 0:
+                    lists = [red_browse, red_counter, red_ai_time_ms, blue_browse, blue_counter, blue_ai_time_ms]
+                    colors = ['red', 'yellow', 'brown', 'purple', 'blue', 'pink']
+                    title1 = str(ai_red) + ' Visited Node'
+                    title2 = str(ai_red) + ' Counter Move'
+                    title3 = str(ai_red) + ' Calculating Time(ms)'
+                    title4 = str(ai_blue) + ' Visited Node'
+                    title5 = str(ai_blue) + ' Counter Move'
+                    title6 = str(ai_blue) + ' Calculating Time(ms)'
+                    titles = [title1, title2, title3, title4, title5, title6]
+                    filename = 'Compare' + str(ai_red) + str(ai_blue) + str(a) + '.png'
+                    draw_line_graph(lists, colors, titles, filename)
+    print(ai_red, red_browse, red_counter, red_ai_time, red_ai_time_ms, ai_blue, blue_browse, blue_counter, blue_ai_time, blue_ai_time_ms)
 
 
 
